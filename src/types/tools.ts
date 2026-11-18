@@ -11,7 +11,7 @@ export interface Tool {
 }
 
 export const TOOLS: Tool[] = [
-  // iLovePDF Inspired Power Suite
+  // Core PDF Power Suite
   {
     id: 'jpg-to-pdf',
     name: 'JPG to PDF Converter',
@@ -21,15 +21,15 @@ export const TOOLS: Tool[] = [
     keywords: ['jpg to pdf', 'image to pdf', 'convert photos to pdf', 'combine images into pdf'],
     icon: 'FileImageIcon',
     isPopular: true,
-    badge: 'iLovePDF Favorite',
+    badge: 'Popular',
   },
   {
     id: 'sign-pdf',
     name: 'Sign PDF Document Free',
     slug: 'sign-pdf',
     category: 'pdf',
-    description: 'Sign PDF contracts, agreements, and forms by drawing your signature. 100% free DocuSign alternative with zero uploads.',
-    keywords: ['sign pdf online free', 'sign contract pdf', 'docusign free alternative', 'e-signature pdf'],
+    description: 'Sign PDF contracts, agreements, and forms by drawing your signature. 100% private e-signatures with zero server uploads.',
+    keywords: ['sign pdf online free', 'sign contract pdf', 'e-signature pdf', 'free pdf signature'],
     icon: 'PenToolIcon',
     isPopular: true,
     badge: 'High Search',
@@ -54,7 +54,7 @@ export const TOOLS: Tool[] = [
     keywords: ['rotate pdf', 'turn pdf pages', 'rotate pdf 90 degrees', 'rotate pdf online free'],
     icon: 'RotateCwIcon',
     isPopular: false,
-    badge: 'iLovePDF',
+    badge: 'Fast & Private',
   },
 
   // PDF Suite
@@ -86,7 +86,7 @@ export const TOOLS: Tool[] = [
     slug: 'doc-scanner',
     category: 'pdf',
     description: 'Turn photos of paper receipts, IDs, and notes into clean, high-contrast black-and-white scanned documents and downloadable PDFs.',
-    keywords: ['online doc scanner', 'scan document to pdf', 'camscanner alternative free', 'receipt scanner online'],
+    keywords: ['online doc scanner', 'scan document to pdf', 'free document scanner', 'receipt scanner online'],
     icon: 'ScanIcon',
     isPopular: true,
     badge: 'High Search',

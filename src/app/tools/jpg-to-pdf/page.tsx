@@ -36,14 +36,21 @@ export default function JpgToPdfPage() {
   const [isConverting, setIsConverting] = useState(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files || e.target.files.length === 0) return;
+  const handleFiles = (files: FileList | File[]) => {
+    if (!files || files.length === 0) return;
     setError(null);
     setDownloadUrl(null);
 
-    const newItems: ImageItem[] = Array.from(e.target.files).map((file) => ({
+    const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (validFiles.length === 0) {
+      setError('Please select valid JPG, PNG, or WebP image files.');
+      return;
+    }
+
+    const newItems: ImageItem[] = validFiles.map((file) => ({
       id: Math.random().toString(36).substring(2, 9),
       name: file.name,
       size: file.size,
@@ -53,6 +60,12 @@ export default function JpgToPdfPage() {
 
     setImages((prev) => [...prev, ...newItems]);
     if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      handleFiles(e.target.files);
+    }
   };
 
   const removeImage = (id: string) => {
@@ -77,37 +90,63 @@ export default function JpgToPdfPage() {
     setDownloadUrl(null);
   };
 
-  // Convert File to JPEG array buffer via Canvas (ensures universal format compatibility)
-  const imageToJpegBytes = (file: File): Promise<Uint8Array> => {
-    return new Promise((resolve, reject) => {
+  // Embed file into PDF with direct buffer support for JPG/PNG and Canvas fallback for WebP
+  const embedImageInPdf = async (pdfDoc: PDFDocument, file: File) => {
+    const arrayBuffer = await file.arrayBuffer();
+    const uint8 = new Uint8Array(arrayBuffer);
+
+    // Try direct native embedding first
+    if (file.type === 'image/jpeg' || file.type === 'image/jpg') {
+      try {
+        return await pdfDoc.embedJpg(uint8);
+      } catch (_) {}
+    } else if (file.type === 'image/png') {
+      try {
+        return await pdfDoc.embedPng(uint8);
+      } catch (_) {}
+    }
+
+    // Fallback: Convert any image (WebP, unsupported PNG/JPG) via Canvas
+    return new Promise<any>((resolve, reject) => {
       const img = new Image();
+      const url = URL.createObjectURL(file);
       img.onload = () => {
-        const canvas = document.createElement('canvas');
-        canvas.width = img.width;
-        canvas.height = img.height;
-        const ctx = canvas.getContext('2d');
-        if (!ctx) {
-          reject(new Error('Canvas context failure'));
-          return;
+        try {
+          const canvas = document.createElement('canvas');
+          const w = img.naturalWidth || img.width || 800;
+          const h = img.naturalHeight || img.height || 600;
+          canvas.width = w;
+          canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          if (!ctx) throw new Error('Canvas context failure');
+          ctx.fillStyle = '#ffffff';
+          ctx.fillRect(0, 0, w, h);
+          ctx.drawImage(img, 0, 0, w, h);
+
+          canvas.toBlob(async (blob) => {
+            URL.revokeObjectURL(url);
+            if (!blob) {
+              reject(new Error('Image conversion failed'));
+              return;
+            }
+            try {
+              const buf = await blob.arrayBuffer();
+              const embedded = await pdfDoc.embedJpg(new Uint8Array(buf));
+              resolve(embedded);
+            } catch (err) {
+              reject(err);
+            }
+          }, 'image/jpeg', 0.92);
+        } catch (e) {
+          URL.revokeObjectURL(url);
+          reject(e);
         }
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(img, 0, 0);
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            reject(new Error('Blob generation failed'));
-            return;
-          }
-          const reader = new FileReader();
-          reader.onload = () => {
-            resolve(new Uint8Array(reader.result as ArrayBuffer));
-          };
-          reader.onerror = reject;
-          reader.readAsArrayBuffer(blob);
-        }, 'image/jpeg', 0.92);
       };
-      img.onerror = () => reject(new Error(`Failed to load image: ${file.name}`));
-      img.src = URL.createObjectURL(file);
+      img.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(new Error(`Failed to load image: ${file.name}`));
+      };
+      img.src = url;
     });
   };
 
@@ -121,8 +160,7 @@ export default function JpgToPdfPage() {
       const pdfDoc = await PDFDocument.create();
 
       for (const item of images) {
-        const jpegBytes = await imageToJpegBytes(item.file);
-        const embeddedImage = await pdfDoc.embedJpg(jpegBytes);
+        const embeddedImage = await embedImageInPdf(pdfDoc, item.file);
         const { width: imgWidth, height: imgHeight } = embeddedImage;
 
         let pageWidth = 595.28; // default A4 portrait (points)
@@ -192,7 +230,7 @@ export default function JpgToPdfPage() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2">
               <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-              <span>iLovePDF Core Alternative</span>
+              <span>High-Speed PDF Creator • Zero Uploads</span>
             </div>
             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
               JPG to PDF Converter
@@ -216,7 +254,23 @@ export default function JpgToPdfPage() {
           {/* Upload Dropzone */}
           <div 
             onClick={() => fileInputRef.current?.click()}
-            className="border-2 border-dashed border-indigo-200 hover:border-indigo-400 bg-indigo-50/30 hover:bg-indigo-50/60 rounded-3xl p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-3 group"
+            onDragOver={(e) => {
+              e.preventDefault();
+              setIsDragging(true);
+            }}
+            onDragLeave={() => setIsDragging(false)}
+            onDrop={(e) => {
+              e.preventDefault();
+              setIsDragging(false);
+              if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                handleFiles(e.dataTransfer.files);
+              }
+            }}
+            className={`border-2 border-dashed rounded-3xl p-8 text-center cursor-pointer transition-all flex flex-col items-center justify-center gap-3 group ${
+              isDragging 
+                ? 'border-indigo-500 bg-indigo-50/80 scale-[1.01]' 
+                : 'border-indigo-200 hover:border-indigo-400 bg-indigo-50/30 hover:bg-indigo-50/60'
+            }`}
           >
             <input 
               type="file" 

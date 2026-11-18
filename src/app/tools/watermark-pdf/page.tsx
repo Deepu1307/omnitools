@@ -156,7 +156,7 @@ export default function WatermarkPdfPage() {
           <div>
             <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/60 mb-2">
               <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
-              <span>iLovePDF Core Alternative</span>
+              <span>Document Protection • Zero Uploads</span>
             </div>
             <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
               Watermark PDF Tool
