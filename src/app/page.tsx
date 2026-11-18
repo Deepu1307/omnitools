@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { 
   ImageIcon, 
@@ -38,6 +38,17 @@ export default function HomePage() {
     { id: 'calculator', label: 'Finance & Calc' },
     { id: 'security', label: 'Security & Dev' },
   ];
+
+  // Sync category from URL search params or hash
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const cat = params.get('category');
+      if (cat && categories.some((c) => c.id === cat)) {
+        setSelectedCategory(cat);
+      }
+    }
+  }, []);
 
   const filteredTools = TOOLS.filter((tool) => {
     const matchesSearch = 
@@ -108,7 +119,7 @@ export default function HomePage() {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-6">
+        <div id="tools" className="flex flex-wrap items-center justify-center gap-2 mt-6 scroll-mt-24">
           {categories.map((cat) => (
             <button
               key={cat.id}

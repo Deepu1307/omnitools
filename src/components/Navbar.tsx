@@ -8,11 +8,23 @@ import CommandPalette from './CommandPalette';
 export default function Navbar() {
   const [isCommandOpen, setIsCommandOpen] = useState(false);
 
+  // Global Cmd+K keyboard shortcut listener
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          {/* Brand Logo */}
+          {/* Brand Logo - Returns Home and resets */}
           <Link href="/" className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-slate-900 group">
             <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-sky-500 text-white shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
               <Wrench className="w-5 h-5" />
@@ -35,13 +47,13 @@ export default function Navbar() {
             </kbd>
           </button>
 
-          {/* Nav Categories */}
+          {/* Nav Categories: Filter tools directly on homepage or return to home with filter */}
           <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <Link href="/#popular" className="hover:text-indigo-600 transition-colors">Popular</Link>
-            <Link href="/#media" className="hover:text-indigo-600 transition-colors">Media</Link>
-            <Link href="/#pdf" className="hover:text-indigo-600 transition-colors">PDF</Link>
-            <Link href="/#calculator" className="hover:text-indigo-600 transition-colors">Finance & Calc</Link>
-            <Link href="/#security" className="hover:text-indigo-600 transition-colors">Security & Dev</Link>
+            <Link href="/?category=popular#tools" className="hover:text-indigo-600 transition-colors">Popular</Link>
+            <Link href="/?category=media#tools" className="hover:text-indigo-600 transition-colors">Media</Link>
+            <Link href="/?category=pdf#tools" className="hover:text-indigo-600 transition-colors">PDF</Link>
+            <Link href="/?category=calculator#tools" className="hover:text-indigo-600 transition-colors">Finance & Calc</Link>
+            <Link href="/?category=security#tools" className="hover:text-indigo-600 transition-colors">Security & Dev</Link>
           </nav>
 
           {/* Mobile search trigger + Support Button */}
