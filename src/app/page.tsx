@@ -309,48 +309,77 @@ function HomeContent() {
           </div>
         )}
 
-        {/* Active Profession Showcase Header Banner - Clean, Modern Light Card */}
+        {/* Active Profession Showcase Header Banner - Ultra-Premium Linear/Apple Obsidian Card */}
         {viewMode === 'professions' && activeProfessionMeta && selectedProfession !== 'all' && (
-          <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm text-left max-w-3xl mx-auto transition-all">
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-              <div className="flex items-start sm:items-center gap-3.5">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-2xl shrink-0 shadow-2xs">
-                  {activeProfessionMeta.emoji}
-                </div>
-                <div>
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h3 className="text-base sm:text-lg font-bold text-slate-900">
-                      {activeProfessionMeta.name}
-                    </h3>
-                    <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/70">
-                      {activeProfessionMeta.tagline}
+          <div className="mt-8 mb-4 relative overflow-hidden rounded-3xl bg-slate-950 border border-slate-800 text-white shadow-2xl max-w-4xl mx-auto text-left group">
+            {/* Ambient Multi-Layer Glow Orbs */}
+            <div className="absolute -top-24 -left-24 w-72 h-72 bg-indigo-600/25 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute -bottom-24 -right-24 w-72 h-72 bg-sky-500/20 rounded-full blur-3xl pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-500/10 via-transparent to-transparent pointer-events-none" />
+
+            <div className="relative z-10 p-6 sm:p-8">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                <div className="flex items-start sm:items-center gap-4 sm:gap-5">
+                  {/* Luxury 3D Glass Avatar with live pulsating status indicator */}
+                  <div className="relative shrink-0">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-indigo-500/30 to-purple-600/30 border border-indigo-400/30 backdrop-blur-md flex items-center justify-center text-3xl sm:text-4xl shadow-xl shadow-indigo-950/50">
+                      {activeProfessionMeta.emoji}
+                    </div>
+                    <span className="absolute -bottom-1 -right-1 flex h-3.5 w-3.5">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-emerald-500 border-2 border-slate-950"></span>
                     </span>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed max-w-xl">
-                    {activeProfessionMeta.description}
-                  </p>
+
+                  <div>
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                        {activeProfessionMeta.name}
+                      </h3>
+                      <span className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20 text-indigo-300 border border-indigo-500/40 shadow-sm backdrop-blur-sm">
+                        <Sparkles className="w-3 h-3 text-indigo-400 shrink-0" />
+                        <span>{activeProfessionMeta.tagline}</span>
+                      </span>
+                    </div>
+                    <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed max-w-2xl font-normal">
+                      {activeProfessionMeta.description}
+                    </p>
+                  </div>
                 </div>
+
+                {/* Sleek Action Pill Button */}
+                <button
+                  onClick={() => {
+                    setSelectedProfession('all');
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('profession');
+                    window.history.pushState({}, '', url.toString());
+                  }}
+                  className="self-start md:self-center shrink-0 inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900/90 hover:bg-slate-800 text-xs font-bold text-slate-200 border border-slate-700/80 shadow-md hover:text-white transition-all hover:scale-[1.02] active:scale-[0.98] whitespace-nowrap"
+                >
+                  <span>All Professions</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+                </button>
               </div>
 
-              <button
-                onClick={() => {
-                  setSelectedProfession('all');
-                  const url = new URL(window.location.href);
-                  url.searchParams.delete('profession');
-                  window.history.pushState({}, '', url.toString());
-                }}
-                className="self-end sm:self-center shrink-0 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors whitespace-nowrap"
-              >
-                View All Suites
-              </button>
-            </div>
+              {/* High-End Badges & Metrics Strip */}
+              <div className="mt-6 pt-5 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div className="flex flex-wrap items-center gap-2.5 text-slate-400">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-emerald-400 font-medium shadow-2xs">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                    <span>100% Client-Side Sandbox</span>
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-900/90 border border-slate-800 text-indigo-300 font-medium shadow-2xs">
+                    <Zap className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
+                    <span>Zero Cloud Storage</span>
+                  </span>
+                </div>
 
-            <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
-              <span className="flex items-center gap-1.5 text-emerald-700 font-medium bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
-                100% In-Browser & Client-Side Secure
-              </span>
-              <span>Showing curated tools for this profession</span>
+                <div className="inline-flex items-center gap-1.5 text-slate-400 text-xs font-medium bg-slate-900/50 px-3 py-1 rounded-lg border border-slate-800/60">
+                  <span>Curated Suite:</span>
+                  <span className="text-white font-bold">{filteredTools.length} Tools</span>
+                </div>
+              </div>
             </div>
           </div>
         )}
