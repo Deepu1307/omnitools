@@ -78,11 +78,15 @@ export default function Footer() {
             <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
               <input
                 type="email"
+                id="footer-newsletter-email"
+                name="email"
+                aria-label="Email address for updates"
                 placeholder="you@domain.com"
                 className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
                 type="submit"
+                aria-label="Subscribe to newsletter"
                 className="px-3 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-colors whitespace-nowrap"
               >
                 Join

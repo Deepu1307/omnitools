@@ -61,6 +61,9 @@ export default function CommandPalette({ isOpen, onClose }: CommandPaletteProps)
           <Search className="w-5 h-5 text-slate-400 mr-3" />
           <input
             type="text"
+            id="command-palette-search"
+            name="command-search"
+            aria-label="Search tools or commands"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type a tool name or command (e.g. resize, pdf, qr, jwt)..."
