@@ -76,6 +76,7 @@ export default function SocialDownloaderPage() {
     setError('');
     setIsExtracting(true);
     setExtractedMedia(null);
+    setIsPlayingPreview(false);
     setDownloadSuccessFormat(null);
     setExtractStep('Connecting to CDN edge server...');
 
@@ -317,20 +318,25 @@ export default function SocialDownloaderPage() {
             {/* Interactive Preview Container */}
             <div className="relative w-full sm:w-56 aspect-[9/14] rounded-2xl overflow-hidden bg-slate-900 shrink-0 shadow-lg group">
               {isPlayingPreview ? (
-                <div className="relative w-full h-full">
+                <div className="relative w-full h-full bg-black">
                   <video
                     src="/sample-media/video_1080p.mp4"
                     autoPlay
+                    muted
                     controls
                     loop
                     playsInline
                     className="w-full h-full object-cover"
                   />
                   <button
-                    onClick={() => setIsPlayingPreview(false)}
-                    className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold z-10 transition-colors"
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsPlayingPreview(false);
+                    }}
+                    className="absolute top-2 right-2 px-2.5 py-1 rounded-full bg-black/70 hover:bg-black/90 text-white text-[10px] font-bold z-20 shadow backdrop-blur-xs transition-colors flex items-center gap-1 cursor-pointer"
                   >
-                    Close Preview
+                    ✕ Close
                   </button>
                 </div>
               ) : (
@@ -347,7 +353,7 @@ export default function SocialDownloaderPage() {
                     onClick={() => setIsPlayingPreview(true)}
                     className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center cursor-pointer hover:bg-black/30 transition-all p-3 text-center"
                   >
-                    <div className="w-12 h-12 rounded-full bg-white/90 text-slate-900 flex items-center justify-center shadow-md transform group-hover:scale-110 transition-transform mb-2">
+                    <div className="w-12 h-12 rounded-full bg-white/95 text-slate-900 flex items-center justify-center shadow-lg transform group-hover:scale-110 transition-transform mb-2">
                       <Play className="w-5 h-5 fill-slate-900 ml-0.5" />
                     </div>
                     <span className="text-[11px] font-bold text-white uppercase tracking-wider drop-shadow">
