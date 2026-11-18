@@ -309,20 +309,48 @@ function HomeContent() {
           </div>
         )}
 
-        {/* Active Profession Showcase Header Banner */}
+        {/* Active Profession Showcase Header Banner - Clean, Modern Light Card */}
         {viewMode === 'professions' && activeProfessionMeta && selectedProfession !== 'all' && (
-          <div className="mt-5 p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white text-left max-w-2xl mx-auto shadow-sm border border-slate-800">
-            <div className="flex items-start sm:items-center gap-3.5">
-              <span className="text-3xl p-2 rounded-xl bg-white/10 shrink-0">{activeProfessionMeta.emoji}</span>
-              <div className="flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h3 className="text-base font-bold text-white">{activeProfessionMeta.name}</h3>
-                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
-                    {activeProfessionMeta.tagline}
-                  </span>
+          <div className="mt-6 p-5 sm:p-6 rounded-2xl bg-white border border-slate-200/90 shadow-sm text-left max-w-3xl mx-auto transition-all">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start sm:items-center gap-3.5">
+                <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-100 flex items-center justify-center text-2xl shrink-0 shadow-2xs">
+                  {activeProfessionMeta.emoji}
                 </div>
-                <p className="text-xs text-slate-300 mt-1 leading-relaxed">{activeProfessionMeta.description}</p>
+                <div>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-base sm:text-lg font-bold text-slate-900">
+                      {activeProfessionMeta.name}
+                    </h3>
+                    <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200/70">
+                      {activeProfessionMeta.tagline}
+                    </span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-slate-600 mt-1 leading-relaxed max-w-xl">
+                    {activeProfessionMeta.description}
+                  </p>
+                </div>
               </div>
+
+              <button
+                onClick={() => {
+                  setSelectedProfession('all');
+                  const url = new URL(window.location.href);
+                  url.searchParams.delete('profession');
+                  window.history.pushState({}, '', url.toString());
+                }}
+                className="self-end sm:self-center shrink-0 px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-50 transition-colors whitespace-nowrap"
+              >
+                View All Suites
+              </button>
+            </div>
+
+            <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center justify-between text-[11px] text-slate-400 gap-2">
+              <span className="flex items-center gap-1.5 text-emerald-700 font-medium bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                100% In-Browser & Client-Side Secure
+              </span>
+              <span>Showing curated tools for this profession</span>
             </div>
           </div>
         )}
