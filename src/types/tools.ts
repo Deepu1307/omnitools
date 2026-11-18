@@ -2,7 +2,7 @@ export interface Tool {
   id: string;
   name: string;
   slug: string;
-  category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security';
+  category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security' | 'text';
   description: string;
   keywords: string[];
   icon: string;
@@ -11,7 +11,42 @@ export interface Tool {
 }
 
 export const TOOLS: Tool[] = [
-  // Media & Consumer Suite
+  // Everyday Daily Drivers
+  {
+    id: 'word-counter',
+    name: 'Smart Word Counter & Text Formatter',
+    slug: 'word-counter',
+    category: 'text',
+    description: 'Real-time word, character, and sentence counter with reading time estimate, text case converters, and social media character limits.',
+    keywords: ['word counter', 'character count', 'case converter', 'title case online', 'twitter character counter'],
+    icon: 'TypeIcon',
+    isPopular: true,
+    badge: 'Daily Essential',
+  },
+  {
+    id: 'diff-checker',
+    name: 'Text & Document Diff Checker',
+    slug: 'diff-checker',
+    category: 'text',
+    description: 'Compare two text drafts, contracts, or code snippets side-by-side. Highlights exact additions, deletions, and modifications.',
+    keywords: ['diff checker', 'compare text', 'text difference finder', 'document comparison online'],
+    icon: 'SplitIcon',
+    isPopular: true,
+    badge: 'Daily Essential',
+  },
+  {
+    id: 'unit-converter',
+    name: 'Instant Universal Unit Converter',
+    slug: 'unit-converter',
+    category: 'calculator',
+    description: 'Lightning-fast converter for length, weight, temperature, digital data (MB/GB), speed, and area with live conversions.',
+    keywords: ['unit converter', 'kg to lbs', 'cm to inches', 'celsius to fahrenheit', 'data storage converter'],
+    icon: 'ScaleIcon',
+    isPopular: true,
+    badge: 'Daily Driver',
+  },
+
+  // Consumer & Media
   {
     id: 'social-downloader',
     name: 'Social Media Video & Post Downloader',
@@ -114,7 +149,7 @@ export const TOOLS: Tool[] = [
     badge: 'New',
   },
 
-  // Finance & Calculators
+  // Calculators & Finance
   {
     id: 'compound-interest-calculator',
     name: 'Compound Interest & SIP Calculator',

@@ -25,7 +25,10 @@ import {
   ShieldAlert,
   Scan,
   Crop,
-  Share2
+  Share2,
+  Type,
+  Split,
+  Scale
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -38,6 +41,7 @@ function HomeContent() {
   const categories = [
     { id: 'all', label: 'All Tools' },
     { id: 'popular', label: '⭐ Popular' },
+    { id: 'daily', label: '⚡ Daily Essentials' },
     { id: 'media', label: 'Image & Video' },
     { id: 'pdf', label: 'PDF Utilities' },
     { id: 'calculator', label: 'Finance & Calc' },
@@ -63,6 +67,7 @@ function HomeContent() {
     if (!matchesSearch) return false;
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'popular') return tool.isPopular;
+    if (selectedCategory === 'daily') return tool.badge?.includes('Daily') || tool.category === 'text';
     if (selectedCategory === 'security') return tool.category === 'security' || tool.category === 'developer';
     return tool.category === selectedCategory;
   });
@@ -84,6 +89,9 @@ function HomeContent() {
       case 'ScanIcon': return <Scan className="w-6 h-6 text-emerald-600" />;
       case 'CropIcon': return <Crop className="w-6 h-6 text-sky-600" />;
       case 'Share2Icon': return <Share2 className="w-6 h-6 text-rose-600" />;
+      case 'TypeIcon': return <Type className="w-6 h-6 text-indigo-600" />;
+      case 'SplitIcon': return <Split className="w-6 h-6 text-purple-600" />;
+      case 'ScaleIcon': return <Scale className="w-6 h-6 text-emerald-600" />;
       default: return <Sparkles className="w-6 h-6 text-indigo-500" />;
     }
   };

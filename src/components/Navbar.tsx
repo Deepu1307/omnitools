@@ -57,7 +57,14 @@ export default function Navbar() {
           </button>
 
           {/* Nav Categories: Filter tools directly on homepage or return to home with filter */}
-          <nav className="hidden md:flex items-center gap-4 lg:gap-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <nav className="hidden md:flex items-center gap-3.5 lg:gap-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <Link 
+              href="/?category=daily#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors text-indigo-600 font-bold"
+            >
+              ⚡ Daily
+            </Link>
             <Link 
               href="/?category=popular#tools" 
               onClick={handleNavClick}
