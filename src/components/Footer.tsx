@@ -185,8 +185,26 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} OmniTools.io • Built for privacy, speed, and zero data tracking.</p>
+          <p>
+            © {new Date().getFullYear()} OmniTools.io • Built with zero data tracking by{' '}
+            <a
+              href="https://deepukumar.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-medium text-slate-600 hover:text-indigo-600 underline underline-offset-2 transition-colors"
+            >
+              Deepu Kumar
+            </a>
+          </p>
           <div className="flex gap-4">
+            <a
+              href="https://deepukumar.netlify.app/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline text-indigo-600 font-medium"
+            >
+              Portfolio ↗
+            </a>
             <span className="hover:underline cursor-pointer">Privacy Policy</span>
             <span className="hover:underline cursor-pointer">Terms of Service</span>
             <span className="hover:underline cursor-pointer">Contact</span>

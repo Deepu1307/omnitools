@@ -11,7 +11,8 @@ import {
   Image as ImageIcon, 
   FileText, 
   Calculator, 
-  ShieldCheck 
+  ShieldCheck,
+  ExternalLink 
 } from 'lucide-react';
 import BrandLogo from './BrandLogo';
 import CommandPalette from './CommandPalette';
@@ -126,6 +127,15 @@ export default function Navbar() {
               >
                 <Search className="w-5 h-5" />
               </button>
+              <a
+                href="https://deepukumar.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-indigo-600 hover:bg-slate-50 border border-slate-200/80 rounded-xl transition-all shadow-2xs whitespace-nowrap group"
+              >
+                <span>Deepu Kumar</span>
+                <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-indigo-600 transition-colors" />
+              </a>
               <a
                 href="https://buymeacoffee.com"
                 target="_blank"

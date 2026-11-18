@@ -34,7 +34,8 @@ export const metadata: Metadata = {
     statusBarStyle: 'default',
     title: 'OmniTools',
   },
-  authors: [{ name: 'OmniTools' }],
+  authors: [{ name: 'Deepu Kumar', url: 'https://deepukumar.netlify.app/' }],
+  creator: 'Deepu Kumar',
   robots: {
     index: true,
     follow: true,
