@@ -28,7 +28,9 @@ import {
   Share2,
   Type,
   Split,
-  Scale
+  Scale,
+  Activity,
+  Flame
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -42,6 +44,7 @@ function HomeContent() {
     { id: 'all', label: 'All Tools' },
     { id: 'popular', label: '⭐ Popular' },
     { id: 'daily', label: '⚡ Daily Essentials' },
+    { id: 'health', label: '🥗 Health & Fitness' },
     { id: 'media', label: 'Image & Video' },
     { id: 'pdf', label: 'PDF Utilities' },
     { id: 'calculator', label: 'Finance & Calc' },
@@ -68,6 +71,7 @@ function HomeContent() {
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'popular') return tool.isPopular;
     if (selectedCategory === 'daily') return tool.badge?.includes('Daily') || tool.category === 'text';
+    if (selectedCategory === 'health') return tool.category === 'health';
     if (selectedCategory === 'security') return tool.category === 'security' || tool.category === 'developer';
     return tool.category === selectedCategory;
   });
@@ -92,6 +96,8 @@ function HomeContent() {
       case 'TypeIcon': return <Type className="w-6 h-6 text-indigo-600" />;
       case 'SplitIcon': return <Split className="w-6 h-6 text-purple-600" />;
       case 'ScaleIcon': return <Scale className="w-6 h-6 text-emerald-600" />;
+      case 'ActivityIcon': return <Activity className="w-6 h-6 text-emerald-600" />;
+      case 'FlameIcon': return <Flame className="w-6 h-6 text-amber-600" />;
       default: return <Sparkles className="w-6 h-6 text-indigo-500" />;
     }
   };

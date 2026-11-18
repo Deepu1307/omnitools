@@ -66,6 +66,13 @@ export default function Navbar() {
               ⚡ Daily
             </Link>
             <Link 
+              href="/?category=health#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors"
+            >
+              Health
+            </Link>
+            <Link 
               href="/?category=popular#tools" 
               onClick={handleNavClick}
               className="hover:text-indigo-600 transition-colors"

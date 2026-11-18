@@ -2,7 +2,7 @@ export interface Tool {
   id: string;
   name: string;
   slug: string;
-  category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security' | 'text';
+  category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security' | 'text' | 'health';
   description: string;
   keywords: string[];
   icon: string;
@@ -11,6 +11,30 @@ export interface Tool {
 }
 
 export const TOOLS: Tool[] = [
+  // Health & Fitness Suite
+  {
+    id: 'bmi-calculator',
+    name: 'BMI & Ideal Body Weight Calculator',
+    slug: 'bmi-calculator',
+    category: 'health',
+    description: 'Calculate your Body Mass Index (BMI), healthy weight range, and category with visual gauge and personalized weight goals.',
+    keywords: ['bmi calculator', 'calculate bmi', 'body mass index', 'ideal weight calculator', 'healthy weight for height'],
+    icon: 'ActivityIcon',
+    isPopular: true,
+    badge: 'Health Essential',
+  },
+  {
+    id: 'calorie-calculator',
+    name: 'Daily Calorie & TDEE Macro Calculator',
+    slug: 'calorie-calculator',
+    category: 'health',
+    description: 'Calculate your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE). Get custom calorie and protein targets for weight loss or muscle gain.',
+    keywords: ['calorie calculator', 'tdee calculator', 'bmr calculator', 'macros calculator', 'calories to lose weight'],
+    icon: 'FlameIcon',
+    isPopular: true,
+    badge: 'Fitness Favorite',
+  },
+
   // Everyday Daily Drivers
   {
     id: 'word-counter',
