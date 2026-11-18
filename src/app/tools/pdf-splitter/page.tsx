@@ -22,15 +22,17 @@ export default function PdfSplitterPage() {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = async (file: File) => {
     if (file.type !== 'application/pdf' && !file.name.endsWith('.pdf')) {
-      alert('Please upload a valid PDF document.');
+      setErrorMessage('Please upload a valid PDF document.');
       return;
     }
 
+    setErrorMessage('');
     setPdfFile(file);
     setIsProcessing(true);
     setStatusMessage('Reading PDF structure...');
@@ -43,7 +45,7 @@ export default function PdfSplitterPage() {
       setRangeInput(total > 1 ? `1-${Math.min(3, total)}` : '1');
       setStatusMessage('');
     } catch (err) {
-      alert('Failed to parse PDF file. Ensure the file is not password-protected.');
+      setErrorMessage('Failed to parse PDF file. Ensure the file is not password-protected.');
     } finally {
       setIsProcessing(false);
     }
@@ -85,7 +87,7 @@ export default function PdfSplitterPage() {
       const targetIndices = parseRanges(rangeInput, pageCount);
 
       if (targetIndices.length === 0) {
-        alert('Please specify at least one valid page number or range.');
+        setErrorMessage('Please specify at least one valid page number or range.');
         setIsProcessing(false);
         return;
       }
@@ -98,9 +100,10 @@ export default function PdfSplitterPage() {
       const blob = new Blob([pdfBytes as any], { type: 'application/pdf' });
       const url = URL.createObjectURL(blob);
       setDownloadUrl(url);
+      setErrorMessage('');
       setStatusMessage(`Extracted ${targetIndices.length} page(s) successfully!`);
     } catch (err) {
-      alert('Failed to extract PDF pages.');
+      setErrorMessage('Failed to extract PDF pages.');
     } finally {
       setIsProcessing(false);
     }
@@ -194,6 +197,12 @@ export default function PdfSplitterPage() {
               Tip: You can use hyphens for ranges (e.g. <code>1-5</code>) and commas for individual pages (e.g. <code>1, 3, 7</code>). Maximum page: {pageCount}.
             </p>
           </div>
+
+          {errorMessage && (
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-medium">
+              {errorMessage}
+            </div>
+          )}
 
           {statusMessage && (
             <div className="p-3 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700 font-medium flex items-center gap-2">

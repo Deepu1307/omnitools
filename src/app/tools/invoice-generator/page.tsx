@@ -23,13 +23,20 @@ interface LineItem {
   price: number;
 }
 
+const getLocalDateString = (offsetDays = 0) => {
+  const d = new Date();
+  if (offsetDays) d.setDate(d.getDate() + offsetDays);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+};
+
 export default function InvoiceGeneratorPage() {
   const [currency, setCurrency] = useState<string>('$');
   const [invoiceNumber, setInvoiceNumber] = useState<string>('INV-2026-001');
-  const [invoiceDate, setInvoiceDate] = useState<string>(new Date().toISOString().split('T')[0]);
-  const [dueDate, setDueDate] = useState<string>(
-    new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
-  );
+  const [invoiceDate, setInvoiceDate] = useState<string>(getLocalDateString(0));
+  const [dueDate, setDueDate] = useState<string>(getLocalDateString(14));
 
   // Business info
   const [businessName, setBusinessName] = useState<string>('Apex Studio & Services');
@@ -71,10 +78,15 @@ export default function InvoiceGeneratorPage() {
   };
 
   // Financial calculations
-  const subtotal = items.reduce((sum, item) => sum + item.quantity * item.price, 0);
-  const discountAmount = (subtotal * discount) / 100;
-  const taxableAmount = subtotal - discountAmount;
-  const taxAmount = (taxableAmount * taxRate) / 100;
+  const subtotal = items.reduce(
+    (sum, item) => sum + (Number(item.quantity) || 0) * (Number(item.price) || 0),
+    0
+  );
+  const safeDiscount = Number(discount) || 0;
+  const safeTaxRate = Number(taxRate) || 0;
+  const discountAmount = (subtotal * safeDiscount) / 100;
+  const taxableAmount = Math.max(0, subtotal - discountAmount);
+  const taxAmount = (taxableAmount * safeTaxRate) / 100;
   const total = taxableAmount + taxAmount;
 
   const handlePrint = () => {

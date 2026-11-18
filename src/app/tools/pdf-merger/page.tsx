@@ -28,6 +28,7 @@ export default function PdfMergerPage() {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
   const [downloadUrl, setDownloadUrl] = useState<string | null>(null);
   const [status, setStatus] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -78,10 +79,11 @@ export default function PdfMergerPage() {
 
   const handleMerge = async () => {
     if (pdfItems.length < 2) {
-      alert('Please upload at least 2 PDF files to merge.');
+      setErrorMessage('Please upload at least 2 PDF files to merge.');
       return;
     }
 
+    setErrorMessage('');
     setIsProcessing(true);
     setStatus('Merging PDF pages into a single document...');
 
@@ -100,7 +102,7 @@ export default function PdfMergerPage() {
       setDownloadUrl(URL.createObjectURL(blob));
       setStatus(`Successfully merged ${pdfItems.length} files (${mergedPdf.getPageCount()} total pages)!`);
     } catch (err) {
-      alert('Failed to merge PDF files. Ensure files are not corrupted or protected.');
+      setErrorMessage('Failed to merge PDF files. Ensure files are not corrupted or protected.');
     } finally {
       setIsProcessing(false);
     }
@@ -212,6 +214,12 @@ export default function PdfMergerPage() {
               </div>
             ))}
           </div>
+
+          {errorMessage && (
+            <div className="p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-semibold">
+              {errorMessage}
+            </div>
+          )}
 
           {status && (
             <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-xs text-emerald-800 font-semibold flex items-center gap-2">

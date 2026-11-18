@@ -85,12 +85,16 @@ export default function ProfitMarginCalculatorPage() {
           <div className="space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-slate-400 block">Profit Breakdown</span>
 
-            <div className="p-4 bg-emerald-50 rounded-2xl border border-emerald-100">
-              <span className="text-xs font-bold text-emerald-800 uppercase block">Gross Profit</span>
-              <span className="text-3xl font-black text-emerald-950 mt-1 block">
-                ${grossProfit.toFixed(2)}
+            <div className={`p-4 rounded-2xl border ${grossProfit >= 0 ? 'bg-emerald-50 border-emerald-100' : 'bg-rose-50 border-rose-100'}`}>
+              <span className={`text-xs font-bold uppercase block ${grossProfit >= 0 ? 'text-emerald-800' : 'text-rose-800'}`}>
+                {grossProfit >= 0 ? 'Gross Profit' : 'Gross Loss'}
               </span>
-              <span className="text-[11px] text-emerald-700">Net revenue remaining after product cost</span>
+              <span className={`text-3xl font-black mt-1 block ${grossProfit >= 0 ? 'text-emerald-950' : 'text-rose-950'}`}>
+                {grossProfit >= 0 ? `$${grossProfit.toFixed(2)}` : `-$${Math.abs(grossProfit).toFixed(2)}`}
+              </span>
+              <span className={`text-[11px] ${grossProfit >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
+                {grossProfit >= 0 ? 'Net revenue remaining after product cost' : 'Warning: Currently selling below cost price (Loss)'}
+              </span>
             </div>
 
             <div className="grid grid-cols-2 gap-3">

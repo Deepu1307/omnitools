@@ -79,7 +79,11 @@ export default function QrCodeGeneratorPage() {
       setCopied(true);
       setTimeout(() => setCopied(false), 2000);
     } catch (e) {
-      alert('Copied to clipboard is not supported in this browser.');
+      try {
+        await navigator.clipboard.writeText(getPayload());
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (_) {}
     }
   };
 

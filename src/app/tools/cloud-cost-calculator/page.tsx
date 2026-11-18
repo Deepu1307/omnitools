@@ -90,7 +90,7 @@ export default function CloudCostCalculatorPage() {
             <div>
               <h4 className="font-bold text-base">Potential Monthly Savings: ${potentialSavings}/mo</h4>
               <p className="text-xs text-emerald-100">
-                Switching egress-heavy workloads to <strong>{cheapest.name}</strong> eliminates up to {Math.round((potentialSavings / mostExpensive.total) * 100)}% of your cloud bill.
+                Switching egress-heavy workloads to <strong>{cheapest.name}</strong> eliminates up to {mostExpensive.total > 0 ? Math.round((potentialSavings / mostExpensive.total) * 100) : 0}% of your cloud bill.
               </p>
             </div>
           </div>

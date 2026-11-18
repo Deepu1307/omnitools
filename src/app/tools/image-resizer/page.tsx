@@ -32,15 +32,17 @@ export default function ImageResizerPage() {
   const [outputUrl, setOutputUrl] = useState<string | null>(null);
   const [outputSize, setOutputSize] = useState<number>(0);
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (file: File) => {
     if (!file.type.startsWith('image/')) {
-      alert('Please select an image file (PNG, JPG, or WebP).');
+      setErrorMessage('Please select a valid image file (PNG, JPG, or WebP).');
       return;
     }
 
+    setErrorMessage('');
     setImageFile(file);
     setOriginalSize(file.size);
 
@@ -169,6 +171,11 @@ export default function ImageResizerPage() {
             accept="image/png,image/jpeg,image/webp"
             className="hidden"
           />
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-rose-50 border border-rose-200 rounded-xl text-xs text-rose-700 font-semibold">
+              {errorMessage}
+            </div>
+          )}
           <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
             <Upload className="w-8 h-8" />
           </div>

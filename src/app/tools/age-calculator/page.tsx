@@ -5,17 +5,28 @@ import Link from 'next/link';
 import { Calendar, Clock, Sparkles, Share2, ArrowLeft, Cake, Heart, Award } from 'lucide-react';
 import AdBanner from '@/components/AdBanner';
 
+const getTodayLocal = () => {
+  const d = new Date();
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
 export default function AgeCalculatorPage() {
   const [birthDate, setBirthDate] = useState<string>('2000-01-01');
-  const [targetDate, setTargetDate] = useState<string>(new Date().toISOString().split('T')[0]);
+  const [targetDate, setTargetDate] = useState<string>(getTodayLocal());
   const [stats, setStats] = useState<any>(null);
   const [copied, setCopied] = useState(false);
 
   const calculateAgeDetails = () => {
-    if (!birthDate) return;
+    if (!birthDate || !targetDate) return;
 
-    const birth = new Date(birthDate);
-    const target = new Date(targetDate);
+    const [by, bm, bd] = birthDate.split('-').map(Number);
+    const [ty, tm, td] = targetDate.split('-').map(Number);
+
+    const birth = new Date(by, bm - 1, bd);
+    const target = new Date(ty, tm - 1, td);
 
     if (isNaN(birth.getTime()) || isNaN(target.getTime()) || birth > target) {
       setStats(null);

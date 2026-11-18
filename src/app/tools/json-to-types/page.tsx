@@ -93,6 +93,38 @@ export default function JsonToTypesPage() {
     return result;
   };
 
+  const generatePythonDataclass = (obj: any, rootName = 'Root'): string => {
+    let result = 'from dataclasses import dataclass\nfrom typing import List, Optional, Any\n\n';
+    const models: string[] = [];
+
+    const processObject = (o: any, name: string): string => {
+      let lines = `@dataclass\nclass ${name}:\n`;
+      for (const [key, value] of Object.entries(o)) {
+        if (value === null) {
+          lines += `    ${key}: Optional[Any] = None\n`;
+        } else if (Array.isArray(value)) {
+          const itemType = value.length > 0 ? (typeof value[0] === 'number' ? 'int' : typeof value[0]) : 'Any';
+          lines += `    ${key}: List[${itemType}]\n`;
+        } else if (typeof value === 'object') {
+          const childName = capitalize(key);
+          models.push(processObject(value, childName));
+          lines += `    ${key}: ${childName}\n`;
+        } else if (typeof value === 'number') {
+          lines += `    ${key}: ${Number.isInteger(value) ? 'int' : 'float'}\n`;
+        } else if (typeof value === 'boolean') {
+          lines += `    ${key}: bool\n`;
+        } else {
+          lines += `    ${key}: str\n`;
+        }
+      }
+      return lines;
+    };
+
+    const main = processObject(obj, rootName);
+    result += [...models, main].join('\n');
+    return result;
+  };
+
   const generateGo = (obj: any, rootName = 'Root'): string => {
     const structs: string[] = [];
 
@@ -161,6 +193,7 @@ export default function JsonToTypesPage() {
     const parsed = JSON.parse(jsonInput);
     if (language === 'typescript') generatedCode = generateTypeScript(parsed);
     else if (language === 'pydantic') generatedCode = generatePydantic(parsed);
+    else if (language === 'python_dataclass') generatedCode = generatePythonDataclass(parsed);
     else if (language === 'go') generatedCode = generateGo(parsed);
     else if (language === 'rust') generatedCode = generateRust(parsed);
     if (error) setError(null);

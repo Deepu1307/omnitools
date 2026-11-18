@@ -188,7 +188,7 @@ export default function BmiCalculatorPage() {
         </div>
 
         {/* Results Card */}
-        {result && (
+        {result ? (
           <div className="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm flex flex-col justify-between space-y-6">
             <div>
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">Your BMI Score</span>
@@ -229,6 +229,11 @@ export default function BmiCalculatorPage() {
               </p>
               <p className="text-xs text-emerald-700">Recommended healthy body weight range based on your height.</p>
             </div>
+          </div>
+        ) : (
+          <div className="bg-white rounded-2xl border border-dashed border-slate-200 p-8 shadow-sm flex flex-col items-center justify-center text-center text-slate-400 space-y-2">
+            <Scale className="w-8 h-8 text-slate-300" />
+            <p className="text-xs font-semibold text-slate-600">Enter valid height and weight measurements to view your BMI score.</p>
           </div>
         )}
       </div>

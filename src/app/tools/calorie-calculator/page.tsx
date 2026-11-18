@@ -23,10 +23,14 @@ export default function CalorieCalculatorPage() {
 
   // Mifflin-St Jeor Formula
   const calculateCalories = () => {
-    let bmr = 10 * weightKg + 6.25 * heightCm - 5 * age;
+    const safeWeight = Math.max(1, weightKg || 70);
+    const safeHeight = Math.max(1, heightCm || 170);
+    const safeAge = Math.max(1, age || 25);
+
+    let bmr = 10 * safeWeight + 6.25 * safeHeight - 5 * safeAge;
     bmr = gender === 'male' ? bmr + 5 : bmr - 161;
 
-    const tdee = Math.round(bmr * activity);
+    const tdee = Math.max(800, Math.round(bmr * activity));
     const weightLoss = tdee - 500;
     const muscleGain = tdee + 300;
 
