@@ -1,8 +1,134 @@
+export type Profession = 
+  | 'designers'
+  | 'lawyers'
+  | 'teachers'
+  | 'traders'
+  | 'doctors'
+  | 'engineers'
+  | 'beauticians'
+  | 'drivers'
+  | 'finance'
+  | 'motivators'
+  | 'real-estate';
+
+export interface ProfessionMeta {
+  id: Profession;
+  name: string;
+  shortLabel: string;
+  emoji: string;
+  tagline: string;
+  description: string;
+  color: string;
+}
+
+export const PROFESSIONS: ProfessionMeta[] = [
+  {
+    id: 'designers',
+    name: 'Designers & Creators',
+    shortLabel: 'Designers',
+    emoji: '🎨',
+    tagline: 'Visual Assets & Media Suite',
+    description: 'High-speed image processing, background removal, cropping, and vector tools without compression loss or server uploads.',
+    color: 'from-pink-500 to-rose-500',
+  },
+  {
+    id: 'lawyers',
+    name: 'Lawyers & Legal Professionals',
+    shortLabel: 'Lawyers',
+    emoji: '⚖️',
+    tagline: 'Client-Confidential Document Suite',
+    description: '100% private in-browser contract e-signing, confidential watermarking, PDF redaction, and diff checking.',
+    color: 'from-amber-600 to-amber-800',
+  },
+  {
+    id: 'teachers',
+    name: 'Teachers & Educators',
+    shortLabel: 'Teachers',
+    emoji: '🎓',
+    tagline: 'Classroom & Grading Toolkit',
+    description: 'Worksheet collation, PDF splitting, essay word count analysis, document scanning, and grading tools.',
+    color: 'from-blue-500 to-indigo-600',
+  },
+  {
+    id: 'traders',
+    name: 'Traders & Investors',
+    shortLabel: 'Traders',
+    emoji: '📈',
+    tagline: 'Position & Wealth Calculators',
+    description: 'Stock averaging calculators, compound interest modeling, profit margins, and risk-management math processed locally.',
+    color: 'from-emerald-500 to-teal-700',
+  },
+  {
+    id: 'doctors',
+    name: 'Doctors & Healthcare Staff',
+    shortLabel: 'Doctors',
+    emoji: '🏥',
+    tagline: 'Patient Metrics & Private Scanning',
+    description: 'HIPAA-friendly local patient document scanning, BMI, calorie tracking, and age calculation with zero cloud exposure.',
+    color: 'from-rose-500 to-red-600',
+  },
+  {
+    id: 'engineers',
+    name: 'Engineers & Developers',
+    shortLabel: 'Engineers',
+    emoji: '⚙️',
+    tagline: 'Code & Architecture Diagnostics',
+    description: 'Client-side JWT debugging, JSON to TypeScript/Go converters, code diffing, unit conversions, and secure entropy generators.',
+    color: 'from-indigo-500 to-purple-600',
+  },
+  {
+    id: 'beauticians',
+    name: 'Beauticians & Salons',
+    shortLabel: 'Beauticians',
+    emoji: '💄',
+    tagline: 'Appointment & Client Billing',
+    description: 'Professional invoice generator, direct WhatsApp booking link maker, before/after image cropping, and service profit margins.',
+    color: 'from-fuchsia-500 to-pink-600',
+  },
+  {
+    id: 'drivers',
+    name: 'Drivers & Transport Operators',
+    shortLabel: 'Drivers',
+    emoji: '🚗',
+    tagline: 'Trip, Mileage & Dispatch Essentials',
+    description: 'Trip mileage conversion, fuel cost calculation, customer invoice generation, and direct WhatsApp contact.',
+    color: 'from-cyan-500 to-blue-600',
+  },
+  {
+    id: 'finance',
+    name: 'Personal Finance & Advisors',
+    shortLabel: 'Finance',
+    emoji: '💰',
+    tagline: 'Budgeting & Wealth Projections',
+    description: 'Compound interest wealth projections, business profit margins, stock averaging, and private expense/invoice documentation.',
+    color: 'from-emerald-600 to-green-700',
+  },
+  {
+    id: 'motivators',
+    name: 'Motivators & Life Coaches',
+    shortLabel: 'Motivators',
+    emoji: '💡',
+    tagline: 'Audience Reach & Media Repurposing',
+    description: 'Social video downloader, video clipping, WhatsApp community links, speech word counter, and client invoicing.',
+    color: 'from-amber-500 to-orange-600',
+  },
+  {
+    id: 'real-estate',
+    name: 'Real Estate Agents & Brokers',
+    shortLabel: 'Real Estate',
+    emoji: '🏢',
+    tagline: 'Property Listings & Lease Agreements',
+    description: 'Property lease e-signing, watermark draft agreements, QR codes for open house signs, and invoice generation.',
+    color: 'from-slate-600 to-slate-800',
+  },
+];
+
 export interface Tool {
   id: string;
   name: string;
   slug: string;
   category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security' | 'text' | 'health' | 'business';
+  professions?: Profession[];
   description: string;
   keywords: string[];
   icon: string;
@@ -17,6 +143,7 @@ export const TOOLS: Tool[] = [
     name: 'JPG to PDF Converter',
     slug: 'jpg-to-pdf',
     category: 'pdf',
+    professions: ['designers', 'lawyers', 'teachers', 'doctors', 'beauticians', 'real-estate'],
     description: 'Convert JPG, PNG, and WebP images into a clean, combined PDF document with custom margins, A4 sizing, and orientation.',
     keywords: ['jpg to pdf', 'image to pdf', 'convert photos to pdf', 'combine images into pdf'],
     icon: 'FileImageIcon',
@@ -28,6 +155,7 @@ export const TOOLS: Tool[] = [
     name: 'Sign PDF Document Free',
     slug: 'sign-pdf',
     category: 'pdf',
+    professions: ['lawyers', 'real-estate', 'teachers', 'beauticians', 'finance'],
     description: 'Sign PDF contracts, agreements, and forms by drawing your signature. 100% private e-signatures with zero server uploads.',
     keywords: ['sign pdf online free', 'sign contract pdf', 'e-signature pdf', 'free pdf signature'],
     icon: 'PenToolIcon',
@@ -39,6 +167,7 @@ export const TOOLS: Tool[] = [
     name: 'Watermark PDF Tool',
     slug: 'watermark-pdf',
     category: 'pdf',
+    professions: ['lawyers', 'designers', 'teachers', 'real-estate'],
     description: 'Stamp custom text watermarks like CONFIDENTIAL, DRAFT, or your company name across PDF pages with custom opacity and angle.',
     keywords: ['watermark pdf', 'add watermark to pdf', 'stamp pdf confidential', 'protect pdf copyright'],
     icon: 'StampIcon',
@@ -50,6 +179,7 @@ export const TOOLS: Tool[] = [
     name: 'Rotate PDF Pages',
     slug: 'rotate-pdf',
     category: 'pdf',
+    professions: ['lawyers', 'teachers', 'doctors', 'real-estate'],
     description: 'Permanently rotate PDF pages 90°, 180°, or 270° clockwise. Rotate individual pages or all pages at once with zero uploads.',
     keywords: ['rotate pdf', 'turn pdf pages', 'rotate pdf 90 degrees', 'rotate pdf online free'],
     icon: 'RotateCwIcon',
@@ -63,6 +193,7 @@ export const TOOLS: Tool[] = [
     name: 'PDF Splitter & Page Extractor',
     slug: 'pdf-splitter',
     category: 'pdf',
+    professions: ['lawyers', 'teachers', 'engineers', 'finance'],
     description: 'Extract specific pages or split PDF documents into smaller files directly on your device. Fast, safe, and private.',
     keywords: ['split pdf', 'extract pdf pages', 'separate pdf pages', 'cut pdf online'],
     icon: 'FileTextIcon',
@@ -74,6 +205,7 @@ export const TOOLS: Tool[] = [
     name: 'PDF Merger & Combiner',
     slug: 'pdf-merger',
     category: 'pdf',
+    professions: ['lawyers', 'teachers', 'doctors', 'real-estate', 'finance'],
     description: 'Merge multiple PDF files into a single organized document in seconds. Reorder pages with zero uploads.',
     keywords: ['merge pdf', 'combine pdf files', 'join pdfs online', 'merge pdf free'],
     icon: 'LayersIcon',
@@ -85,6 +217,7 @@ export const TOOLS: Tool[] = [
     name: 'Document Scanner & PDF Enhancer',
     slug: 'doc-scanner',
     category: 'pdf',
+    professions: ['lawyers', 'doctors', 'teachers', 'drivers', 'real-estate'],
     description: 'Turn photos of paper receipts, IDs, and notes into clean, high-contrast black-and-white scanned documents and downloadable PDFs.',
     keywords: ['online doc scanner', 'scan document to pdf', 'free document scanner', 'receipt scanner online'],
     icon: 'ScanIcon',
@@ -98,6 +231,7 @@ export const TOOLS: Tool[] = [
     name: 'Instant Professional Invoice Maker',
     slug: 'invoice-generator',
     category: 'business',
+    professions: ['lawyers', 'beauticians', 'drivers', 'engineers', 'motivators', 'real-estate', 'finance'],
     description: 'Create, customize, and download professional client invoices and receipts with auto-calculated taxes, discounts, and print-ready PDF export.',
     keywords: ['invoice generator free', 'create invoice pdf', 'receipt maker online', 'freelance invoice template', 'bill generator'],
     icon: 'ReceiptIcon',
@@ -109,6 +243,7 @@ export const TOOLS: Tool[] = [
     name: 'Profit Margin & Markup Calculator',
     slug: 'profit-margin-calculator',
     category: 'business',
+    professions: ['traders', 'beauticians', 'drivers', 'finance', 'real-estate'],
     description: 'Calculate gross profit, profit margin percentage, markup rate, and retail sales price for shops, freelancers, and e-commerce sellers.',
     keywords: ['profit margin calculator', 'markup calculator', 'retail pricing calculator', 'gross profit margin'],
     icon: 'BadgePercentIcon',
@@ -120,6 +255,7 @@ export const TOOLS: Tool[] = [
     name: 'WhatsApp Direct Chat & QR Link Maker',
     slug: 'whatsapp-link-generator',
     category: 'business',
+    professions: ['beauticians', 'drivers', 'motivators', 'real-estate', 'traders'],
     description: 'Generate instant click-to-chat WhatsApp links and counter QR codes with pre-filled customer messages for local bookings and orders.',
     keywords: ['whatsapp link generator', 'wa me link maker', 'whatsapp qr code for business', 'whatsapp order link'],
     icon: 'MessageSquareIcon',
@@ -133,6 +269,7 @@ export const TOOLS: Tool[] = [
     name: 'Smart Word Counter & Text Formatter',
     slug: 'word-counter',
     category: 'text',
+    professions: ['teachers', 'lawyers', 'motivators', 'designers'],
     description: 'Real-time word, character, and sentence counter with reading time estimate, text case converters, and social media character limits.',
     keywords: ['word counter', 'character count', 'case converter', 'title case online', 'twitter character counter'],
     icon: 'TypeIcon',
@@ -144,6 +281,7 @@ export const TOOLS: Tool[] = [
     name: 'Text & Document Diff Checker',
     slug: 'diff-checker',
     category: 'text',
+    professions: ['lawyers', 'engineers', 'teachers'],
     description: 'Compare two text drafts, contracts, or code snippets side-by-side. Highlights exact additions, deletions, and modifications.',
     keywords: ['diff checker', 'compare text', 'text difference finder', 'document comparison online'],
     icon: 'SplitIcon',
@@ -155,6 +293,7 @@ export const TOOLS: Tool[] = [
     name: 'Instant Universal Unit Converter',
     slug: 'unit-converter',
     category: 'calculator',
+    professions: ['engineers', 'drivers', 'teachers', 'doctors'],
     description: 'Lightning-fast converter for length, weight, temperature, digital data (MB/GB), speed, and area with live conversions.',
     keywords: ['unit converter', 'kg to lbs', 'cm to inches', 'celsius to fahrenheit', 'data storage converter'],
     icon: 'ScaleIcon',
@@ -168,6 +307,7 @@ export const TOOLS: Tool[] = [
     name: 'BMI & Ideal Body Weight Calculator',
     slug: 'bmi-calculator',
     category: 'health',
+    professions: ['doctors', 'motivators', 'teachers'],
     description: 'Calculate your Body Mass Index (BMI), healthy weight range, and category with visual gauge and personalized weight goals.',
     keywords: ['bmi calculator', 'calculate bmi', 'body mass index', 'ideal weight calculator', 'healthy weight for height'],
     icon: 'ActivityIcon',
@@ -179,6 +319,7 @@ export const TOOLS: Tool[] = [
     name: 'Daily Calorie & TDEE Macro Calculator',
     slug: 'calorie-calculator',
     category: 'health',
+    professions: ['doctors', 'motivators'],
     description: 'Calculate your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE). Get custom calorie and protein targets for weight loss or muscle gain.',
     keywords: ['calorie calculator', 'tdee calculator', 'bmr calculator', 'macros calculator', 'calories to lose weight'],
     icon: 'FlameIcon',
@@ -192,6 +333,7 @@ export const TOOLS: Tool[] = [
     name: 'Social Media Video & Post Downloader',
     slug: 'social-downloader',
     category: 'media',
+    professions: ['motivators', 'designers', 'teachers'],
     description: 'Download Reels, Shorts, TikTok clips, and posts from public social links in high-definition MP4 with zero watermarks.',
     keywords: ['instagram reel downloader', 'tiktok video download', 'save social video', 'shorts downloader', 'video saver online'],
     icon: 'Share2Icon',
@@ -203,6 +345,7 @@ export const TOOLS: Tool[] = [
     name: 'Social Media Image & Canvas Cropper',
     slug: 'image-cropper',
     category: 'media',
+    professions: ['designers', 'beauticians', 'teachers', 'motivators'],
     description: 'Crop images to exact social aspect ratios: 1:1 (Instagram), 9:16 (Stories/Reels), 16:9 (YouTube), and custom freeform.',
     keywords: ['image cropper', 'crop photo for instagram', 'youtube thumbnail cropper', 'aspect ratio cutter'],
     icon: 'CropIcon',
@@ -214,6 +357,7 @@ export const TOOLS: Tool[] = [
     name: 'Custom QR Code Studio',
     slug: 'qr-code-generator',
     category: 'consumer',
+    professions: ['beauticians', 'drivers', 'teachers', 'designers', 'motivators', 'real-estate'],
     description: 'Create high-resolution custom QR codes for websites, WiFi networks, vCards, and text. Download as PNG or SVG.',
     keywords: ['qr code generator', 'free qr code', 'wifi qr code', 'custom color qr code', 'svg qr code'],
     icon: 'QrCodeIcon',
@@ -225,6 +369,7 @@ export const TOOLS: Tool[] = [
     name: 'Image Resizer & Compressor',
     slug: 'image-resizer',
     category: 'media',
+    professions: ['designers', 'beauticians', 'teachers', 'motivators', 'real-estate'],
     description: 'Resize, compress, and convert PNG, JPG, and WebP images instantly in your browser with zero quality loss and 100% privacy.',
     keywords: ['image resizer', 'compress image', 'convert webp to png', 'reduce photo size', 'client-side photo editor'],
     icon: 'ImageIcon',
@@ -236,6 +381,7 @@ export const TOOLS: Tool[] = [
     name: 'Instant Background Remover',
     slug: 'background-remover',
     category: 'media',
+    professions: ['designers', 'beauticians', 'motivators', 'real-estate'],
     description: 'Remove background from photos and create transparent PNGs directly in your browser. No signup, no watermark.',
     keywords: ['remove background', 'transparent png', 'bg remover free', 'photo cutout'],
     icon: 'ScissorsIcon',
@@ -247,6 +393,7 @@ export const TOOLS: Tool[] = [
     name: 'Video Clipper & Trimmer',
     slug: 'video-clipper',
     category: 'media',
+    professions: ['designers', 'motivators', 'teachers'],
     description: 'Trim and cut MP4 and WebM videos without watermarks. Set exact start/end timestamps and export in seconds.',
     keywords: ['video cutter', 'trim video online', 'video clipper', 'cut mp4 free'],
     icon: 'VideoIcon',
@@ -260,6 +407,7 @@ export const TOOLS: Tool[] = [
     name: 'Compound Interest & SIP Calculator',
     slug: 'compound-interest-calculator',
     category: 'calculator',
+    professions: ['traders', 'finance', 'lawyers'],
     description: 'Visualize your wealth growth over time with monthly compounding, recurring contributions, and inflation adjustments.',
     keywords: ['compound interest calculator', 'sip calculator', 'investment growth calculator', 'future value calculator'],
     icon: 'TrendingUpIcon',
@@ -267,10 +415,47 @@ export const TOOLS: Tool[] = [
     badge: 'High CPM',
   },
   {
+    id: 'stock-average-down-calculator',
+    name: 'Stock Average Down & Position Calculator',
+    slug: 'stock-average-down-calculator',
+    category: 'calculator',
+    professions: ['traders', 'finance'],
+    description: 'Calculate your new weighted average share price when buying stock dips and crypto pullbacks with exact breakeven target.',
+    keywords: ['stock average calculator', 'average down calculator', 'crypto average price', 'share price average'],
+    icon: 'TrendingUpIcon',
+    isPopular: true,
+    badge: 'Trader Essential',
+  },
+  {
+    id: 'billable-hours-calculator',
+    name: 'Lawyer & Client Billable Hours Calculator',
+    slug: 'billable-hours-calculator',
+    category: 'calculator',
+    professions: ['lawyers', 'engineers', 'finance'],
+    description: 'Track billable client time in 6-minute (0.1) legal increments, calculate fees, apply retainers, and export itemized invoices.',
+    keywords: ['billable hours calculator', 'lawyer fee calculator', 'attorney billing increments', 'consultant time tracker'],
+    icon: 'ReceiptIcon',
+    isPopular: true,
+    badge: 'Legal & Pro',
+  },
+  {
+    id: 'fuel-trip-calculator',
+    name: 'Fuel Cost & Trip Mileage Calculator',
+    slug: 'fuel-trip-calculator',
+    category: 'calculator',
+    professions: ['drivers', 'business', 'finance'],
+    description: 'Calculate exact trip fuel costs, fuel consumption (liters/gallons), toll breakdown, and per-passenger split for drivers and fleets.',
+    keywords: ['fuel cost calculator', 'gas trip calculator', 'mileage cost calculator', 'driver expense calculator'],
+    icon: 'ScaleIcon',
+    isPopular: true,
+    badge: 'Driver Essential',
+  },
+  {
     id: 'age-calculator',
     name: 'Exact Age & Milestone Calculator',
     slug: 'age-calculator',
     category: 'calculator',
+    professions: ['doctors', 'teachers', 'drivers'],
     description: 'Calculate your exact age in years, months, days, hours, and minutes. Track upcoming birthdays and life milestones.',
     keywords: ['age calculator', 'date of birth calculator', 'how old am i', 'days until birthday', 'life milestones'],
     icon: 'CalendarIcon',
@@ -282,6 +467,7 @@ export const TOOLS: Tool[] = [
     name: 'Cloud Storage & Egress Estimator',
     slug: 'cloud-cost-calculator',
     category: 'calculator',
+    professions: ['engineers', 'finance'],
     description: 'Compare monthly storage and network egress costs between AWS S3, Google Cloud Storage, Cloudflare R2, and Azure Blob.',
     keywords: ['cloud storage pricing', 's3 egress cost calculator', 'cloudflare r2 vs s3', 'gcp storage pricing'],
     icon: 'CloudIcon',
@@ -295,6 +481,7 @@ export const TOOLS: Tool[] = [
     name: 'Private JWT Inspector & Decoder',
     slug: 'jwt-debugger',
     category: 'security',
+    professions: ['engineers'],
     description: 'Decode and inspect JSON Web Tokens locally. Check header, payload claims, expiration timers, and structure without sending tokens to any server.',
     keywords: ['jwt decoder', 'jwt debugger', 'decode token', 'jwt expiration check', 'private jwt viewer'],
     icon: 'ShieldAlertIcon',
@@ -306,6 +493,7 @@ export const TOOLS: Tool[] = [
     name: 'Secure Password & Passphrase Generator',
     slug: 'password-generator',
     category: 'security',
+    professions: ['engineers', 'lawyers', 'doctors', 'finance'],
     description: 'Generate cryptographically strong random passwords and multi-word passphrases with entropy score and crack-time estimation.',
     keywords: ['password generator', 'strong password maker', 'diceware passphrase generator', 'password entropy'],
     icon: 'KeyIcon',
@@ -317,6 +505,7 @@ export const TOOLS: Tool[] = [
     name: 'JSON to Multi-Language Types',
     slug: 'json-to-types',
     category: 'developer',
+    professions: ['engineers'],
     description: 'Convert JSON objects into clean TypeScript interfaces, Python Pydantic models, Go structs, and Rust structs.',
     keywords: ['json to typescript', 'json to pydantic', 'json to go struct', 'json to rust'],
     icon: 'CodeIcon',

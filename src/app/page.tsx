@@ -40,23 +40,43 @@ import {
   RotateCw,
   Star,
   Briefcase,
-  Calculator
+  Calculator,
+  UserCheck
 } from 'lucide-react';
-import { TOOLS, Tool } from '@/types/tools';
+import { TOOLS, Tool, PROFESSIONS, Profession } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
 
 function HomeContent() {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedProfession, setSelectedProfession] = useState<string>('all');
+  const [viewMode, setViewMode] = useState<'categories' | 'professions'>('categories');
   const [shortcutKey, setShortcutKey] = useState<string>('⌘K');
+  const [bookmarkedToolIds, setBookmarkedToolIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform);
       setShortcutKey(isApple ? '⌘K' : 'Ctrl K');
+      try {
+        const saved = localStorage.getItem('omnitools_favorites');
+        if (saved) setBookmarkedToolIds(JSON.parse(saved));
+      } catch (_) {}
     }
   }, []);
+
+  const toggleBookmark = (e: React.MouseEvent, toolId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setBookmarkedToolIds((prev) => {
+      const next = prev.includes(toolId) ? prev.filter((id) => id !== toolId) : [...prev, toolId];
+      try {
+        localStorage.setItem('omnitools_favorites', JSON.stringify(next));
+      } catch (_) {}
+      return next;
+    });
+  };
 
   const categories = [
     { id: 'all', label: 'All Tools', icon: <Sparkles className="w-3.5 h-3.5" /> },
@@ -70,13 +90,20 @@ function HomeContent() {
     { id: 'security', label: 'Security & Dev', icon: <ShieldCheck className="w-3.5 h-3.5 text-purple-500" /> },
   ];
 
-  // Reactively sync category whenever URL query params change (e.g. from nav clicks)
+  // Reactively sync category and profession whenever URL query params change
   useEffect(() => {
+    const prof = searchParams.get('profession');
     const cat = searchParams.get('category');
-    if (cat && categories.some((c) => c.id === cat)) {
+
+    if (prof && PROFESSIONS.some((p) => p.id === prof)) {
+      setViewMode('professions');
+      setSelectedProfession(prof);
+    } else if (cat && categories.some((c) => c.id === cat)) {
+      setViewMode('categories');
       setSelectedCategory(cat);
-    } else if (!cat) {
+    } else if (!cat && !prof) {
       setSelectedCategory('all');
+      setSelectedProfession('all');
     }
   }, [searchParams]);
 
@@ -87,6 +114,13 @@ function HomeContent() {
       tool.keywords.some((k) => k.toLowerCase().includes(searchQuery.toLowerCase()));
 
     if (!matchesSearch) return false;
+
+    if (viewMode === 'professions') {
+      if (selectedProfession === 'all') return true;
+      return tool.professions?.includes(selectedProfession as Profession);
+    }
+
+    // Category mode
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'popular') return tool.isPopular;
     if (selectedCategory === 'daily') return tool.badge?.includes('Daily') || tool.category === 'text';
@@ -95,6 +129,9 @@ function HomeContent() {
     if (selectedCategory === 'security') return tool.category === 'security' || tool.category === 'developer';
     return tool.category === selectedCategory;
   });
+
+  const activeProfessionMeta = PROFESSIONS.find((p) => p.id === selectedProfession);
+  const bookmarkedTools = TOOLS.filter((t) => bookmarkedToolIds.includes(t.id));
 
   const getToolIcon = (iconName: string) => {
     switch (iconName) {
@@ -166,30 +203,129 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* Category Pills */}
-        <div id="tools" className="flex flex-wrap items-center justify-center gap-2 mt-6 scroll-mt-24">
-          {categories.map((cat) => (
+        {/* View Mode Switcher: Categories vs. Profession Suites */}
+        <div id="tools" className="mt-8 mb-4 inline-flex p-1 rounded-2xl bg-slate-100/90 border border-slate-200/90 shadow-2xs scroll-mt-24">
+          <button
+            onClick={() => {
+              setViewMode('categories');
+              const url = new URL(window.location.href);
+              url.searchParams.delete('profession');
+              window.history.pushState({}, '', url.toString());
+            }}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              viewMode === 'categories'
+                ? 'bg-white text-indigo-600 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Browse by Utility</span>
+          </button>
+          <button
+            onClick={() => {
+              setViewMode('professions');
+              const url = new URL(window.location.href);
+              url.searchParams.delete('category');
+              window.history.pushState({}, '', url.toString());
+            }}
+            className={`inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              viewMode === 'professions'
+                ? 'bg-white text-indigo-600 shadow-sm'
+                : 'text-slate-600 hover:text-slate-900'
+            }`}
+          >
+            <Briefcase className="w-3.5 h-3.5 text-indigo-600" />
+            <span>Browse by Profession Suite</span>
+            <span className="text-[10px] font-extrabold px-1.5 py-0.2 rounded-full bg-indigo-50 text-indigo-600 border border-indigo-200">
+              NEW
+            </span>
+          </button>
+        </div>
+
+        {/* Filter Pills: Categories Mode */}
+        {viewMode === 'categories' && (
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => {
+                  setSelectedCategory(cat.id);
+                  const url = new URL(window.location.href);
+                  if (cat.id === 'all') url.searchParams.delete('category');
+                  else url.searchParams.set('category', cat.id);
+                  window.history.pushState({}, '', url.toString());
+                }}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  selectedCategory === cat.id
+                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                {cat.icon}
+                <span>{cat.label}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Filter Pills: Professions Mode */}
+        {viewMode === 'professions' && (
+          <div className="flex flex-wrap items-center justify-center gap-2 mt-2">
             <button
-              key={cat.id}
               onClick={() => {
-                setSelectedCategory(cat.id);
-                // Also reflect in URL without full reload
+                setSelectedProfession('all');
                 const url = new URL(window.location.href);
-                if (cat.id === 'all') url.searchParams.delete('category');
-                else url.searchParams.set('category', cat.id);
+                url.searchParams.delete('profession');
                 window.history.pushState({}, '', url.toString());
               }}
               className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                selectedCategory === cat.id
+                selectedProfession === 'all'
                   ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20'
                   : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
               }`}
             >
-              {cat.icon}
-              <span>{cat.label}</span>
+              <span>🌐</span>
+              <span>All Professions</span>
             </button>
-          ))}
-        </div>
+            {PROFESSIONS.map((prof) => (
+              <button
+                key={prof.id}
+                onClick={() => {
+                  setSelectedProfession(prof.id);
+                  const url = new URL(window.location.href);
+                  url.searchParams.set('profession', prof.id);
+                  window.history.pushState({}, '', url.toString());
+                }}
+                className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                  selectedProfession === prof.id
+                    ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20'
+                    : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
+                }`}
+              >
+                <span>{prof.emoji}</span>
+                <span>{prof.shortLabel}</span>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Active Profession Showcase Header Banner */}
+        {viewMode === 'professions' && activeProfessionMeta && selectedProfession !== 'all' && (
+          <div className="mt-5 p-5 rounded-2xl bg-gradient-to-r from-slate-900 to-indigo-950 text-white text-left max-w-2xl mx-auto shadow-sm border border-slate-800">
+            <div className="flex items-start sm:items-center gap-3.5">
+              <span className="text-3xl p-2 rounded-xl bg-white/10 shrink-0">{activeProfessionMeta.emoji}</span>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h3 className="text-base font-bold text-white">{activeProfessionMeta.name}</h3>
+                  <span className="text-[10px] uppercase font-bold px-2 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40">
+                    {activeProfessionMeta.tagline}
+                  </span>
+                </div>
+                <p className="text-xs text-slate-300 mt-1 leading-relaxed">{activeProfessionMeta.description}</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Top Monetization / Partner Banner */}
@@ -197,9 +333,55 @@ function HomeContent() {
 
       {/* Tools Grid */}
       <div className="mt-8">
+        {/* Pinned Favorites Row (If any bookmarked) */}
+        {bookmarkedTools.length > 0 && searchQuery === '' && selectedCategory === 'all' && selectedProfession === 'all' && (
+          <div className="mb-10 p-5 rounded-2xl bg-amber-50/50 border border-amber-200/80 shadow-2xs">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                <h3 className="text-sm font-bold text-slate-800">My Pinned Quick-Access Tools</h3>
+                <span className="text-xs font-medium text-slate-500">({bookmarkedTools.length})</span>
+              </div>
+              <span className="text-[11px] text-slate-400">Stored privately in your browser</span>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {bookmarkedTools.map((tool) => (
+                <Link
+                  key={`pinned-${tool.id}`}
+                  href={`/tools/${tool.slug}`}
+                  className="flex items-center justify-between p-3.5 bg-white rounded-xl border border-amber-200/60 shadow-2xs hover:shadow-sm hover:border-amber-300 transition-all group"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-amber-50">
+                      {getToolIcon(tool.icon)}
+                    </div>
+                    <div>
+                      <h4 className="text-xs font-bold text-slate-800 group-hover:text-indigo-600 transition-colors">
+                        {tool.name}
+                      </h4>
+                      <p className="text-[11px] text-slate-400 truncate max-w-[180px]">
+                        {tool.description}
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={(e) => toggleBookmark(e, tool.id)}
+                    className="text-amber-500 hover:text-slate-300 p-1 transition-colors"
+                    title="Unpin tool"
+                  >
+                    <Star className="w-3.5 h-3.5 fill-amber-500" />
+                  </button>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-slate-900">
-            {selectedCategory === 'all' ? 'All Free Tools' : `${categories.find(c => c.id === selectedCategory)?.label}`}
+            {viewMode === 'professions'
+              ? (selectedProfession === 'all' ? 'All Professional Tool Suites' : `${activeProfessionMeta?.emoji} ${activeProfessionMeta?.name} Suite`)
+              : (selectedCategory === 'all' ? 'All Free Tools' : `${categories.find(c => c.id === selectedCategory)?.label}`)}
           </h2>
           <span className="text-xs font-semibold text-slate-400">
             Showing {filteredTools.length} tool{filteredTools.length === 1 ? '' : 's'}
@@ -213,8 +395,10 @@ function HomeContent() {
               onClick={() => { 
                 setSearchQuery(''); 
                 setSelectedCategory('all');
+                setSelectedProfession('all');
                 const url = new URL(window.location.href);
                 url.searchParams.delete('category');
+                url.searchParams.delete('profession');
                 window.history.pushState({}, '', url.toString());
               }}
               className="mt-3 text-xs font-semibold text-indigo-600 hover:underline"
@@ -235,11 +419,20 @@ function HomeContent() {
                     <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-indigo-50 group-hover:border-indigo-100 transition-colors">
                       {getToolIcon(tool.icon)}
                     </div>
-                    {tool.badge && (
-                      <span className="text-[11px] font-semibold tracking-wide uppercase px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover:bg-indigo-100 group-hover:text-indigo-700 transition-colors">
-                        {tool.badge}
-                      </span>
-                    )}
+                    <div className="flex items-center gap-1.5">
+                      {tool.badge && (
+                        <span className="text-[11px] font-semibold tracking-wide uppercase px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-600 group-hover:bg-indigo-100 group-hover:text-indigo-700 transition-colors">
+                          {tool.badge}
+                        </span>
+                      )}
+                      <button
+                        onClick={(e) => toggleBookmark(e, tool.id)}
+                        title={bookmarkedToolIds.includes(tool.id) ? 'Remove from favorites' : 'Pin to favorites'}
+                        className="p-1 rounded-lg hover:bg-slate-100 text-slate-300 hover:text-amber-500 transition-colors"
+                      >
+                        <Star className={`w-4 h-4 ${bookmarkedToolIds.includes(tool.id) ? 'text-amber-500 fill-amber-500' : ''}`} />
+                      </button>
+                    </div>
                   </div>
                   <h3 className="font-bold text-lg text-slate-900 group-hover:text-indigo-600 transition-colors">
                     {tool.name}

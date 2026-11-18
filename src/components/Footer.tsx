@@ -205,9 +205,15 @@ export default function Footer() {
             >
               Portfolio ↗
             </a>
-            <span className="hover:underline cursor-pointer">Privacy Policy</span>
-            <span className="hover:underline cursor-pointer">Terms of Service</span>
-            <span className="hover:underline cursor-pointer">Contact</span>
+            <Link href="/privacy" className="hover:underline hover:text-slate-600 transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:underline hover:text-slate-600 transition-colors">
+              Terms of Service
+            </Link>
+            <Link href="/contact" className="hover:underline hover:text-slate-600 transition-colors">
+              Contact
+            </Link>
           </div>
         </div>
       </div>
