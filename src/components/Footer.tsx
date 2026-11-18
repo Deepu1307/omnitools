@@ -1,12 +1,53 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
-import { ShieldCheck, Zap, Lock, Mail } from 'lucide-react';
+import { ShieldCheck, Zap, Lock, Mail, CheckCircle2, Loader2, AlertCircle } from 'lucide-react';
 import BrandLogo from './BrandLogo';
-import { TOOLS } from '@/types/tools';
 
 export default function Footer() {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [feedbackMessage, setFeedbackMessage] = useState('');
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      setStatus('error');
+      setFeedbackMessage('Please enter a valid email address.');
+      return;
+    }
+
+    setStatus('loading');
+    setFeedbackMessage('');
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        setStatus('success');
+        setFeedbackMessage(data.message || 'Thank you! You are on the OmniTools VIP update list.');
+        try {
+          localStorage.setItem('omnitools_subscribed_email', email);
+        } catch (_) {}
+        setEmail('');
+      } else {
+        setStatus('error');
+        setFeedbackMessage(data.error || 'Failed to subscribe. Please try again.');
+      }
+    } catch (err: any) {
+      console.error(err);
+      setStatus('error');
+      setFeedbackMessage('Network error. Please try again later.');
+    }
+  };
+
   return (
     <footer className="border-t border-slate-200 bg-white mt-20">
       {/* Trust & Privacy Highlights */}
@@ -57,44 +98,89 @@ export default function Footer() {
           <div>
             <h6 className="font-semibold text-xs uppercase tracking-wider text-slate-400 mb-3">Consumer & Media</h6>
             <ul className="space-y-2 text-sm text-slate-600">
+              <li><Link href="/tools/jpg-to-pdf" className="hover:text-indigo-600">JPG to PDF Converter</Link></li>
+              <li><Link href="/tools/sign-pdf" className="hover:text-indigo-600">Sign PDF Online Free</Link></li>
               <li><Link href="/tools/image-resizer" className="hover:text-indigo-600">Image Resizer & Compressor</Link></li>
               <li><Link href="/tools/background-remover" className="hover:text-indigo-600">Background Remover</Link></li>
               <li><Link href="/tools/pdf-splitter" className="hover:text-indigo-600">PDF Splitter & Extractor</Link></li>
               <li><Link href="/tools/video-clipper" className="hover:text-indigo-600">Video Clipper & Trimmer</Link></li>
-              <li><Link href="/tools/age-calculator" className="hover:text-indigo-600">Age & Milestone Calculator</Link></li>
             </ul>
           </div>
 
           <div>
-            <h6 className="font-semibold text-xs uppercase tracking-wider text-slate-400 mb-3">Developer & Cloud</h6>
+            <h6 className="font-semibold text-xs uppercase tracking-wider text-slate-400 mb-3">Business & Dev</h6>
             <ul className="space-y-2 text-sm text-slate-600">
+              <li><Link href="/tools/invoice-generator" className="hover:text-indigo-600">Instant Invoice Maker</Link></li>
+              <li><Link href="/tools/whatsapp-link-generator" className="hover:text-indigo-600">WhatsApp Direct Chat Maker</Link></li>
+              <li><Link href="/tools/profit-margin-calculator" className="hover:text-indigo-600">Profit Margin Calculator</Link></li>
               <li><Link href="/tools/json-to-types" className="hover:text-indigo-600">JSON to Types (TS/Python/Go)</Link></li>
               <li><Link href="/tools/cloud-cost-calculator" className="hover:text-indigo-600">Cloud Storage & Egress Estimator</Link></li>
             </ul>
           </div>
 
+          {/* Interactive Newsletter Subscription */}
           <div>
             <h6 className="font-semibold text-xs uppercase tracking-wider text-slate-400 mb-3">Stay Updated</h6>
             <p className="text-xs text-slate-500 mb-3">
               Get notified when we launch new free tools and productivity utilities.
             </p>
-            <form onSubmit={(e) => e.preventDefault()} className="flex gap-2">
-              <input
-                type="email"
-                id="footer-newsletter-email"
-                name="email"
-                aria-label="Email address for updates"
-                placeholder="you@domain.com"
-                className="w-full text-xs px-3 py-2 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              />
-              <button
-                type="submit"
-                aria-label="Subscribe to newsletter"
-                className="px-3 py-2 text-xs font-semibold rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-colors whitespace-nowrap"
-              >
-                Join
-              </button>
-            </form>
+
+            {status === 'success' ? (
+              <div className="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 animate-fadeIn">
+                <div className="flex items-center gap-1.5 text-xs font-bold mb-1">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>You&apos;re Subscribed!</span>
+                </div>
+                <p className="text-[11px] text-emerald-700 leading-snug">
+                  {feedbackMessage}
+                </p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="mt-2 text-[10px] font-semibold text-emerald-800 underline hover:text-emerald-900"
+                >
+                  Subscribe another email
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubscribe} className="space-y-2">
+                <div className="flex gap-2">
+                  <input
+                    type="email"
+                    id="footer-newsletter-email"
+                    name="email"
+                    aria-label="Email address for updates"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@domain.com"
+                    required
+                    disabled={status === 'loading'}
+                    className="w-full text-xs px-3 py-2 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 bg-white"
+                  />
+                  <button
+                    type="submit"
+                    disabled={status === 'loading'}
+                    aria-label="Subscribe to newsletter"
+                    className="inline-flex items-center justify-center gap-1.5 px-4 py-2 text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-sm shadow-indigo-500/20 disabled:opacity-50 transition-all whitespace-nowrap"
+                  >
+                    {status === 'loading' ? (
+                      <>
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                        <span>Joining...</span>
+                      </>
+                    ) : (
+                      <span>Join</span>
+                    )}
+                  </button>
+                </div>
+
+                {status === 'error' && (
+                  <div className="flex items-center gap-1 text-[11px] font-medium text-rose-600">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+                    <span>{feedbackMessage}</span>
+                  </div>
+                )}
+              </form>
+            )}
           </div>
         </div>
 
