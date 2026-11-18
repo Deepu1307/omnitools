@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import PWAProvider from '@/components/PWAProvider';
 
 export const metadata: Metadata = {
   title: {
@@ -27,6 +28,12 @@ export const metadata: Metadata = {
     'cloud storage calculator',
     'privacy first tools'
   ],
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'OmniTools',
+  },
   authors: [{ name: 'OmniTools' }],
   robots: {
     index: true,
@@ -62,6 +69,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <PWAProvider />
       </body>
     </html>
   );

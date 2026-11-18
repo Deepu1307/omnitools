@@ -1,0 +1,59 @@
+import { MetadataRoute } from 'next';
+
+export default function manifest(): MetadataRoute.Manifest {
+  return {
+    name: 'OmniTools — Free Client-Side Productivity Utilities',
+    short_name: 'OmniTools',
+    description: '100% free, private client-side utilities for photos, videos, PDFs, calculations, and developer workflows with zero uploads.',
+    start_url: '/?source=pwa',
+    id: '/',
+    scope: '/',
+    display: 'standalone',
+    background_color: '#ffffff',
+    theme_color: '#4f46e5',
+    orientation: 'any',
+    categories: ['utilities', 'productivity', 'photo', 'finance'],
+    icons: [
+      {
+        src: '/icons/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/icons/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png',
+        purpose: 'any',
+      },
+      {
+        src: '/favicon.svg',
+        sizes: 'any',
+        type: 'image/svg+xml',
+        purpose: 'maskable',
+      },
+    ],
+    shortcuts: [
+      {
+        name: 'JPG to PDF',
+        url: '/tools/jpg-to-pdf?source=pwa_shortcut',
+        description: 'Convert and merge images into a PDF',
+      },
+      {
+        name: 'Sign PDF Document',
+        url: '/tools/sign-pdf?source=pwa_shortcut',
+        description: 'Sign contracts and forms for free',
+      },
+      {
+        name: 'Image Resizer',
+        url: '/tools/image-resizer?source=pwa_shortcut',
+        description: 'Resize and compress photos',
+      },
+      {
+        name: 'Invoice Generator',
+        url: '/tools/invoice-generator?source=pwa_shortcut',
+        description: 'Create professional client invoices',
+      },
+    ],
+  };
+}
