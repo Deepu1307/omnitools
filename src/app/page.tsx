@@ -33,7 +33,11 @@ import {
   Flame,
   Receipt,
   BadgePercent,
-  MessageSquare
+  MessageSquare,
+  FileImage,
+  PenTool,
+  Stamp,
+  RotateCw
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -106,6 +110,10 @@ function HomeContent() {
       case 'ReceiptIcon': return <Receipt className="w-6 h-6 text-indigo-600" />;
       case 'BadgePercentIcon': return <BadgePercent className="w-6 h-6 text-emerald-600" />;
       case 'MessageSquareIcon': return <MessageSquare className="w-6 h-6 text-emerald-600" />;
+      case 'FileImageIcon': return <FileImage className="w-6 h-6 text-indigo-600" />;
+      case 'PenToolIcon': return <PenTool className="w-6 h-6 text-indigo-600" />;
+      case 'StampIcon': return <Stamp className="w-6 h-6 text-amber-600" />;
+      case 'RotateCwIcon': return <RotateCw className="w-6 h-6 text-sky-600" />;
       default: return <Sparkles className="w-6 h-6 text-indigo-500" />;
     }
   };

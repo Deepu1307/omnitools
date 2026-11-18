@@ -11,6 +11,87 @@ export interface Tool {
 }
 
 export const TOOLS: Tool[] = [
+  // iLovePDF Inspired Power Suite
+  {
+    id: 'jpg-to-pdf',
+    name: 'JPG to PDF Converter',
+    slug: 'jpg-to-pdf',
+    category: 'pdf',
+    description: 'Convert JPG, PNG, and WebP images into a clean, combined PDF document with custom margins, A4 sizing, and orientation.',
+    keywords: ['jpg to pdf', 'image to pdf', 'convert photos to pdf', 'combine images into pdf'],
+    icon: 'FileImageIcon',
+    isPopular: true,
+    badge: 'iLovePDF Favorite',
+  },
+  {
+    id: 'sign-pdf',
+    name: 'Sign PDF Document Free',
+    slug: 'sign-pdf',
+    category: 'pdf',
+    description: 'Sign PDF contracts, agreements, and forms by drawing your signature. 100% free DocuSign alternative with zero uploads.',
+    keywords: ['sign pdf online free', 'sign contract pdf', 'docusign free alternative', 'e-signature pdf'],
+    icon: 'PenToolIcon',
+    isPopular: true,
+    badge: 'High Search',
+  },
+  {
+    id: 'watermark-pdf',
+    name: 'Watermark PDF Tool',
+    slug: 'watermark-pdf',
+    category: 'pdf',
+    description: 'Stamp custom text watermarks like CONFIDENTIAL, DRAFT, or your company name across PDF pages with custom opacity and angle.',
+    keywords: ['watermark pdf', 'add watermark to pdf', 'stamp pdf confidential', 'protect pdf copyright'],
+    icon: 'StampIcon',
+    isPopular: false,
+    badge: 'Security',
+  },
+  {
+    id: 'rotate-pdf',
+    name: 'Rotate PDF Pages',
+    slug: 'rotate-pdf',
+    category: 'pdf',
+    description: 'Permanently rotate PDF pages 90°, 180°, or 270° clockwise. Rotate individual pages or all pages at once with zero uploads.',
+    keywords: ['rotate pdf', 'turn pdf pages', 'rotate pdf 90 degrees', 'rotate pdf online free'],
+    icon: 'RotateCwIcon',
+    isPopular: false,
+    badge: 'iLovePDF',
+  },
+
+  // PDF Suite
+  {
+    id: 'pdf-splitter',
+    name: 'PDF Splitter & Page Extractor',
+    slug: 'pdf-splitter',
+    category: 'pdf',
+    description: 'Extract specific pages or split PDF documents into smaller files directly on your device. Fast, safe, and private.',
+    keywords: ['split pdf', 'extract pdf pages', 'separate pdf pages', 'cut pdf online'],
+    icon: 'FileTextIcon',
+    isPopular: true,
+    badge: 'Private',
+  },
+  {
+    id: 'pdf-merger',
+    name: 'PDF Merger & Combiner',
+    slug: 'pdf-merger',
+    category: 'pdf',
+    description: 'Merge multiple PDF files into a single organized document in seconds. Reorder pages with zero uploads.',
+    keywords: ['merge pdf', 'combine pdf files', 'join pdfs online', 'merge pdf free'],
+    icon: 'LayersIcon',
+    isPopular: true,
+    badge: 'Popular',
+  },
+  {
+    id: 'doc-scanner',
+    name: 'Document Scanner & PDF Enhancer',
+    slug: 'doc-scanner',
+    category: 'pdf',
+    description: 'Turn photos of paper receipts, IDs, and notes into clean, high-contrast black-and-white scanned documents and downloadable PDFs.',
+    keywords: ['online doc scanner', 'scan document to pdf', 'camscanner alternative free', 'receipt scanner online'],
+    icon: 'ScanIcon',
+    isPopular: true,
+    badge: 'High Search',
+  },
+
   // Local Business & Commerce Suite
   {
     id: 'invoice-generator',
@@ -44,30 +125,6 @@ export const TOOLS: Tool[] = [
     icon: 'MessageSquareIcon',
     isPopular: true,
     badge: 'Local Commerce',
-  },
-
-  // Health & Fitness Suite
-  {
-    id: 'bmi-calculator',
-    name: 'BMI & Ideal Body Weight Calculator',
-    slug: 'bmi-calculator',
-    category: 'health',
-    description: 'Calculate your Body Mass Index (BMI), healthy weight range, and category with visual gauge and personalized weight goals.',
-    keywords: ['bmi calculator', 'calculate bmi', 'body mass index', 'ideal weight calculator', 'healthy weight for height'],
-    icon: 'ActivityIcon',
-    isPopular: true,
-    badge: 'Health Essential',
-  },
-  {
-    id: 'calorie-calculator',
-    name: 'Daily Calorie & TDEE Macro Calculator',
-    slug: 'calorie-calculator',
-    category: 'health',
-    description: 'Calculate your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE). Get custom calorie and protein targets for weight loss or muscle gain.',
-    keywords: ['calorie calculator', 'tdee calculator', 'bmr calculator', 'macros calculator', 'calories to lose weight'],
-    icon: 'FlameIcon',
-    isPopular: true,
-    badge: 'Fitness Favorite',
   },
 
   // Everyday Daily Drivers
@@ -105,6 +162,30 @@ export const TOOLS: Tool[] = [
     badge: 'Daily Driver',
   },
 
+  // Health & Fitness Suite
+  {
+    id: 'bmi-calculator',
+    name: 'BMI & Ideal Body Weight Calculator',
+    slug: 'bmi-calculator',
+    category: 'health',
+    description: 'Calculate your Body Mass Index (BMI), healthy weight range, and category with visual gauge and personalized weight goals.',
+    keywords: ['bmi calculator', 'calculate bmi', 'body mass index', 'ideal weight calculator', 'healthy weight for height'],
+    icon: 'ActivityIcon',
+    isPopular: true,
+    badge: 'Health Essential',
+  },
+  {
+    id: 'calorie-calculator',
+    name: 'Daily Calorie & TDEE Macro Calculator',
+    slug: 'calorie-calculator',
+    category: 'health',
+    description: 'Calculate your Basal Metabolic Rate (BMR) and Total Daily Energy Expenditure (TDEE). Get custom calorie and protein targets for weight loss or muscle gain.',
+    keywords: ['calorie calculator', 'tdee calculator', 'bmr calculator', 'macros calculator', 'calories to lose weight'],
+    icon: 'FlameIcon',
+    isPopular: true,
+    badge: 'Fitness Favorite',
+  },
+
   // Consumer & Media
   {
     id: 'social-downloader',
@@ -116,17 +197,6 @@ export const TOOLS: Tool[] = [
     icon: 'Share2Icon',
     isPopular: true,
     badge: 'Massive Traffic',
-  },
-  {
-    id: 'doc-scanner',
-    name: 'Document Scanner & PDF Enhancer',
-    slug: 'doc-scanner',
-    category: 'pdf',
-    description: 'Turn photos of paper receipts, IDs, and notes into clean, high-contrast black-and-white scanned documents and downloadable PDFs.',
-    keywords: ['online doc scanner', 'scan document to pdf', 'camscanner alternative free', 'receipt scanner online'],
-    icon: 'ScanIcon',
-    isPopular: true,
-    badge: 'High Search',
   },
   {
     id: 'image-cropper',
@@ -182,30 +252,6 @@ export const TOOLS: Tool[] = [
     icon: 'VideoIcon',
     isPopular: false,
     badge: 'No Watermark',
-  },
-
-  // PDF Suite
-  {
-    id: 'pdf-splitter',
-    name: 'PDF Splitter & Page Extractor',
-    slug: 'pdf-splitter',
-    category: 'pdf',
-    description: 'Extract specific pages or split PDF documents into smaller files directly on your device. Fast, safe, and private.',
-    keywords: ['split pdf', 'extract pdf pages', 'separate pdf pages', 'cut pdf online'],
-    icon: 'FileTextIcon',
-    isPopular: true,
-    badge: 'Private',
-  },
-  {
-    id: 'pdf-merger',
-    name: 'PDF Merger & Combiner',
-    slug: 'pdf-merger',
-    category: 'pdf',
-    description: 'Merge multiple PDF files into a single organized document in seconds. Reorder pages with zero uploads.',
-    keywords: ['merge pdf', 'combine pdf files', 'join pdfs online', 'merge pdf free'],
-    icon: 'LayersIcon',
-    isPopular: true,
-    badge: 'New',
   },
 
   // Calculators & Finance
