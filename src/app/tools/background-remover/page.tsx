@@ -11,7 +11,8 @@ import {
   Pipette, 
   RotateCcw,
   Sliders,
-  CheckCircle2
+  CheckCircle2,
+  RefreshCw
 } from 'lucide-react';
 import AdBanner from '@/components/AdBanner';
 
@@ -25,50 +26,26 @@ export default function BackgroundRemoverPage() {
   const [isProcessing, setIsProcessing] = useState<boolean>(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const loadedImageRef = useRef<HTMLImageElement | null>(null);
 
-  const handleFileUpload = (file: File) => {
-    if (!file.type.startsWith('image/')) return;
-    setImageFile(file);
-
-    const url = URL.createObjectURL(file);
-    setPreviewUrl(url);
-
-    const img = new Image();
-    img.onload = () => {
-      // Auto-sample top-left corner color as default background
-      const tempCanvas = document.createElement('canvas');
-      tempCanvas.width = img.naturalWidth;
-      tempCanvas.height = img.naturalHeight;
-      const ctx = tempCanvas.getContext('2d');
-      if (ctx) {
-        ctx.drawImage(img, 0, 0);
-        const pixel = ctx.getImageData(0, 0, 1, 1).data;
-        setTargetColor({ r: pixel[0], g: pixel[1], b: pixel[2] });
-        processBackgroundRemoval(img, { r: pixel[0], g: pixel[1], b: pixel[2] }, tolerance, feather);
-      }
-    };
-    img.src = url;
-  };
-
-  const processBackgroundRemoval = (
-    imgSrc?: HTMLImageElement,
+  const executeRemoval = (
+    loadedImg: HTMLImageElement,
     color = targetColor,
     tol = tolerance,
     f = feather
   ) => {
-    if (!previewUrl) return;
     setIsProcessing(true);
-
-    const img = imgSrc || new Image();
-    img.onload = () => {
+    try {
       const canvas = document.createElement('canvas');
-      canvas.width = img.naturalWidth;
-      canvas.height = img.naturalHeight;
+      canvas.width = loadedImg.naturalWidth;
+      canvas.height = loadedImg.naturalHeight;
       const ctx = canvas.getContext('2d');
-      if (!ctx) return;
+      if (!ctx) {
+        setIsProcessing(false);
+        return;
+      }
 
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(loadedImg, 0, 0);
       const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imgData.data;
 
@@ -104,33 +81,80 @@ export default function BackgroundRemoverPage() {
         }
         setIsProcessing(false);
       }, 'image/png');
-    };
+    } catch (err) {
+      console.error('Error removing background:', err);
+      setIsProcessing(false);
+    }
+  };
 
-    if (!imgSrc) {
+  const processBackgroundRemoval = (
+    color = targetColor,
+    tol = tolerance,
+    f = feather
+  ) => {
+    if (loadedImageRef.current) {
+      executeRemoval(loadedImageRef.current, color, tol, f);
+    } else if (previewUrl) {
+      const img = new Image();
+      img.onload = () => {
+        loadedImageRef.current = img;
+        executeRemoval(img, color, tol, f);
+      };
+      img.onerror = () => setIsProcessing(false);
       img.src = previewUrl;
     }
   };
 
-  const pickColorFromCanvas = (e: React.MouseEvent<HTMLImageElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = Math.floor(((e.clientX - rect.left) / rect.width) * e.currentTarget.naturalWidth);
-    const y = Math.floor(((e.clientY - rect.top) / rect.height) * e.currentTarget.naturalHeight);
+  const handleFileUpload = (file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    setImageFile(file);
+    setIsProcessing(true);
+
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
 
     const img = new Image();
     img.onload = () => {
-      const c = document.createElement('canvas');
-      c.width = img.naturalWidth;
-      c.height = img.naturalHeight;
-      const ctx = c.getContext('2d');
+      loadedImageRef.current = img;
+      // Auto-sample top-left corner color as default background
+      const tempCanvas = document.createElement('canvas');
+      tempCanvas.width = img.naturalWidth;
+      tempCanvas.height = img.naturalHeight;
+      const ctx = tempCanvas.getContext('2d');
+      let sampledColor = { r: 255, g: 255, b: 255 };
       if (ctx) {
         ctx.drawImage(img, 0, 0);
-        const pixel = ctx.getImageData(x, y, 1, 1).data;
-        const newColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
-        setTargetColor(newColor);
-        processBackgroundRemoval(img, newColor, tolerance, feather);
+        const pixel = ctx.getImageData(0, 0, 1, 1).data;
+        sampledColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
       }
+      setTargetColor(sampledColor);
+      executeRemoval(img, sampledColor, tolerance, feather);
     };
-    img.src = previewUrl || '';
+    img.onerror = () => setIsProcessing(false);
+    img.src = url;
+  };
+
+  const pickColorFromCanvas = (e: React.MouseEvent<HTMLImageElement>) => {
+    const imgEl = e.currentTarget;
+    const rect = imgEl.getBoundingClientRect();
+    const x = Math.floor(((e.clientX - rect.left) / rect.width) * imgEl.naturalWidth);
+    const y = Math.floor(((e.clientY - rect.top) / rect.height) * imgEl.naturalHeight);
+
+    const c = document.createElement('canvas');
+    c.width = imgEl.naturalWidth;
+    c.height = imgEl.naturalHeight;
+    const ctx = c.getContext('2d');
+    if (ctx) {
+      ctx.drawImage(imgEl, 0, 0);
+      const pixel = ctx.getImageData(x, y, 1, 1).data;
+      const newColor = { r: pixel[0], g: pixel[1], b: pixel[2] };
+      setTargetColor(newColor);
+      if (loadedImageRef.current) {
+        executeRemoval(loadedImageRef.current, newColor, tolerance, feather);
+      } else {
+        processBackgroundRemoval(newColor, tolerance, feather);
+      }
+    }
   };
 
   return (
@@ -186,7 +210,12 @@ export default function BackgroundRemoverPage() {
             <div className="flex items-center justify-between border-b border-slate-100 pb-4">
               <h3 className="font-bold text-base text-slate-800">Cutout Controls</h3>
               <button
-                onClick={() => { setPreviewUrl(null); setOutputUrl(null); }}
+                onClick={() => {
+                  setPreviewUrl(null);
+                  setOutputUrl(null);
+                  setImageFile(null);
+                  loadedImageRef.current = null;
+                }}
                 className="text-xs text-slate-400 hover:text-rose-500"
               >
                 Change Photo
@@ -224,7 +253,7 @@ export default function BackgroundRemoverPage() {
                 onChange={(e) => {
                   const val = Number(e.target.value);
                   setTolerance(val);
-                  processBackgroundRemoval(undefined, targetColor, val, feather);
+                  processBackgroundRemoval(targetColor, val, feather);
                 }}
                 className="w-full accent-rose-600 cursor-pointer"
               />
@@ -244,7 +273,7 @@ export default function BackgroundRemoverPage() {
                 onChange={(e) => {
                   const val = Number(e.target.value);
                   setFeather(val);
-                  processBackgroundRemoval(undefined, targetColor, tolerance, val);
+                  processBackgroundRemoval(targetColor, tolerance, val);
                 }}
                 className="w-full accent-rose-600 cursor-pointer"
               />
@@ -292,8 +321,13 @@ export default function BackgroundRemoverPage() {
                       alt="Cutout Preview"
                       className="max-h-[340px] max-w-full object-contain"
                     />
+                  ) : isProcessing ? (
+                    <div className="flex items-center gap-2 text-rose-600 text-xs font-semibold">
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                      <span>Processing cutout...</span>
+                    </div>
                   ) : (
-                    <div className="text-slate-400 text-xs">Processing cutout...</div>
+                    <div className="text-slate-400 text-xs">Click on the original image to remove background</div>
                   )}
                 </div>
               </div>
