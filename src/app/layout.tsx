@@ -6,10 +6,10 @@ import PWAProvider from '@/components/PWAProvider';
 
 export const metadata: Metadata = {
   title: {
-    default: 'OmniTools.io — 100% Free Client-Side Tools',
+    default: 'OmniTools.io — 100% Private Web Tools • Zero Uploads',
     template: '%s | OmniTools.io',
   },
-  description: '100% free, client-side tools for everyday users and developers: image resizer, background remover, PDF splitter, age calculator, video clipper, and JSON converters. Fast, secure, and private.',
+  description: '100% free, private web tools for creators, professionals, and developers: image resizer, background remover, PDF splitter, age calculator, video clipper, and JSON converters. Fast, secure, and zero server uploads.',
   icons: {
     icon: [
       { url: '/favicon.svg', type: 'image/svg+xml' },

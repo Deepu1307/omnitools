@@ -35,7 +35,7 @@ export default function BrandLogo({ size = 'md', showText = true, className = ''
             </span>
           </div>
           <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-1 leading-none">
-            Free Client-Side Tools
+            100% Private • Zero Uploads
           </span>
         </div>
       )}

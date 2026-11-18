@@ -91,7 +91,7 @@ export default function Footer() {
               <BrandLogo size="sm" />
             </Link>
             <p className="text-xs text-slate-500 leading-relaxed">
-              Curated suite of free, high-speed, client-side tools designed for creators, developers, students, and everyday internet users.
+              An all-in-one suite of 100% private, browser-native utilities built for professionals, creators, and everyday productivity. Every document, image, and calculation is processed directly on your device with zero server uploads.
             </p>
           </div>
 
@@ -185,7 +185,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} OmniTools. Built with privacy and speed in mind.</p>
+          <p>© {new Date().getFullYear()} OmniTools.io • Built for privacy, speed, and zero data tracking.</p>
           <div className="flex gap-4">
             <span className="hover:underline cursor-pointer">Privacy Policy</span>
             <span className="hover:underline cursor-pointer">Terms of Service</span>
