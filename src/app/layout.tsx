@@ -4,8 +4,18 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'OmniTools - Free Online Image, PDF, Media & Developer Utilities',
+  title: {
+    default: 'OmniTools.io — 100% Free Client-Side Tools',
+    template: '%s | OmniTools.io',
+  },
   description: '100% free, client-side tools for everyday users and developers: image resizer, background remover, PDF splitter, age calculator, video clipper, and JSON converters. Fast, secure, and private.',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' },
+    ],
+    apple: '/favicon.svg',
+  },
   keywords: [
     'free online tools',
     'image resizer',

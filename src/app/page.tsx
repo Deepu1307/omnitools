@@ -37,7 +37,10 @@ import {
   FileImage,
   PenTool,
   Stamp,
-  RotateCw
+  RotateCw,
+  Star,
+  Briefcase,
+  Calculator
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -48,15 +51,15 @@ function HomeContent() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
   const categories = [
-    { id: 'all', label: 'All Tools' },
-    { id: 'popular', label: '⭐ Popular' },
-    { id: 'daily', label: '⚡ Daily Essentials' },
-    { id: 'business', label: '💼 Business & Local' },
-    { id: 'health', label: '🥗 Health & Fitness' },
-    { id: 'media', label: 'Image & Video' },
-    { id: 'pdf', label: 'PDF Utilities' },
-    { id: 'calculator', label: 'Finance & Calc' },
-    { id: 'security', label: 'Security & Dev' },
+    { id: 'all', label: 'All Tools', icon: <Sparkles className="w-3.5 h-3.5" /> },
+    { id: 'popular', label: 'Popular', icon: <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> },
+    { id: 'daily', label: 'Daily Essentials', icon: <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500/20" /> },
+    { id: 'business', label: 'Business & Local', icon: <Briefcase className="w-3.5 h-3.5 text-indigo-500" /> },
+    { id: 'health', label: 'Health & Fitness', icon: <Activity className="w-3.5 h-3.5 text-emerald-500" /> },
+    { id: 'media', label: 'Image & Video', icon: <ImageIcon className="w-3.5 h-3.5 text-sky-500" /> },
+    { id: 'pdf', label: 'PDF Utilities', icon: <FileText className="w-3.5 h-3.5 text-rose-500" /> },
+    { id: 'calculator', label: 'Finance & Calc', icon: <Calculator className="w-3.5 h-3.5 text-emerald-600" /> },
+    { id: 'security', label: 'Security & Dev', icon: <ShieldCheck className="w-3.5 h-3.5 text-purple-500" /> },
   ];
 
   // Reactively sync category whenever URL query params change (e.g. from nav clicks)
@@ -168,13 +171,14 @@ function HomeContent() {
                 else url.searchParams.set('category', cat.id);
                 window.history.pushState({}, '', url.toString());
               }}
-              className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
+              className={`inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all ${
                 selectedCategory === cat.id
-                  ? 'bg-indigo-600 text-white shadow-sm'
+                  ? 'bg-indigo-600 text-white shadow-sm shadow-indigo-600/20'
                   : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
               }`}
             >
-              {cat.label}
+              {cat.icon}
+              <span>{cat.label}</span>
             </button>
           ))}
         </div>
