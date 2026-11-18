@@ -39,6 +39,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="stylesheet" href="/styles.css" />
         {/* AdSense Verification Tag Placeholder (Replace ca-pub-XXXX with your publisher ID) */}
         {/* <meta name="google-adsense-account" content="ca-pub-XXXXXXXXXXXXXXXX" /> */}
