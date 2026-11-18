@@ -1,7 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { 
   ImageIcon, 
   Scissors, 
@@ -26,7 +27,8 @@ import {
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
 
-export default function HomePage() {
+function HomeContent() {
+  const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
 
@@ -39,16 +41,15 @@ export default function HomePage() {
     { id: 'security', label: 'Security & Dev' },
   ];
 
-  // Sync category from URL search params or hash
+  // Reactively sync category whenever URL query params change (e.g. from nav clicks)
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const params = new URLSearchParams(window.location.search);
-      const cat = params.get('category');
-      if (cat && categories.some((c) => c.id === cat)) {
-        setSelectedCategory(cat);
-      }
+    const cat = searchParams.get('category');
+    if (cat && categories.some((c) => c.id === cat)) {
+      setSelectedCategory(cat);
+    } else if (!cat) {
+      setSelectedCategory('all');
     }
-  }, []);
+  }, [searchParams]);
 
   const filteredTools = TOOLS.filter((tool) => {
     const matchesSearch = 
@@ -123,7 +124,14 @@ export default function HomePage() {
           {categories.map((cat) => (
             <button
               key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
+              onClick={() => {
+                setSelectedCategory(cat.id);
+                // Also reflect in URL without full reload
+                const url = new URL(window.location.href);
+                if (cat.id === 'all') url.searchParams.delete('category');
+                else url.searchParams.set('category', cat.id);
+                window.history.pushState({}, '', url.toString());
+              }}
               className={`px-3.5 py-1.5 rounded-full text-xs font-medium transition-all ${
                 selectedCategory === cat.id
                   ? 'bg-indigo-600 text-white shadow-sm'
@@ -154,7 +162,13 @@ export default function HomePage() {
           <div className="text-center py-16 bg-white rounded-2xl border border-slate-200">
             <p className="text-slate-500 text-sm">No tools found matching &quot;{searchQuery}&quot;</p>
             <button
-              onClick={() => { setSearchQuery(''); setSelectedCategory('all'); }}
+              onClick={() => { 
+                setSearchQuery(''); 
+                setSelectedCategory('all');
+                const url = new URL(window.location.href);
+                url.searchParams.delete('category');
+                window.history.pushState({}, '', url.toString());
+              }}
               className="mt-3 text-xs font-semibold text-indigo-600 hover:underline"
             >
               Clear filters
@@ -269,5 +283,13 @@ export default function HomePage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-400">Loading tools...</div>}>
+      <HomeContent />
+    </Suspense>
   );
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Wrench, Heart, Search, Command } from 'lucide-react';
 import CommandPalette from './CommandPalette';
@@ -9,7 +9,7 @@ export default function Navbar() {
   const [isCommandOpen, setIsCommandOpen] = useState(false);
 
   // Global Cmd+K keyboard shortcut listener
-  React.useEffect(() => {
+  useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -19,6 +19,15 @@ export default function Navbar() {
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
+
+  const handleNavClick = () => {
+    // If on homepage, smooth-scroll down to tools
+    if (typeof window !== 'undefined' && window.location.pathname === '/') {
+      setTimeout(() => {
+        document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' });
+      }, 50);
+    }
+  };
 
   return (
     <>
@@ -38,7 +47,7 @@ export default function Navbar() {
           {/* Quick Search Bar / Cmd+K trigger */}
           <button
             onClick={() => setIsCommandOpen(true)}
-            className="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-slate-100 text-slate-400 text-xs font-medium transition-all shadow-sm max-w-xs w-64"
+            className="hidden sm:flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50/80 hover:bg-slate-100 text-slate-400 text-xs font-medium transition-all shadow-sm max-w-xs w-56 lg:w-64"
           >
             <Search className="w-3.5 h-3.5 text-slate-400" />
             <span className="flex-1 text-left text-slate-500">Quick search...</span>
@@ -48,12 +57,42 @@ export default function Navbar() {
           </button>
 
           {/* Nav Categories: Filter tools directly on homepage or return to home with filter */}
-          <nav className="hidden lg:flex items-center gap-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
-            <Link href="/?category=popular#tools" className="hover:text-indigo-600 transition-colors">Popular</Link>
-            <Link href="/?category=media#tools" className="hover:text-indigo-600 transition-colors">Media</Link>
-            <Link href="/?category=pdf#tools" className="hover:text-indigo-600 transition-colors">PDF</Link>
-            <Link href="/?category=calculator#tools" className="hover:text-indigo-600 transition-colors">Finance & Calc</Link>
-            <Link href="/?category=security#tools" className="hover:text-indigo-600 transition-colors">Security & Dev</Link>
+          <nav className="hidden md:flex items-center gap-4 lg:gap-5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+            <Link 
+              href="/?category=popular#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors"
+            >
+              Popular
+            </Link>
+            <Link 
+              href="/?category=media#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors"
+            >
+              Media
+            </Link>
+            <Link 
+              href="/?category=pdf#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors"
+            >
+              PDF
+            </Link>
+            <Link 
+              href="/?category=calculator#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors"
+            >
+              Finance & Calc
+            </Link>
+            <Link 
+              href="/?category=security#tools" 
+              onClick={handleNavClick}
+              className="hover:text-indigo-600 transition-colors"
+            >
+              Security & Dev
+            </Link>
           </nav>
 
           {/* Mobile search trigger + Support Button */}
