@@ -22,7 +22,10 @@ import {
   TrendingUp,
   Layers,
   Key,
-  ShieldAlert
+  ShieldAlert,
+  Scan,
+  Crop,
+  Share2
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -78,6 +81,9 @@ function HomeContent() {
       case 'LayersIcon': return <Layers className="w-6 h-6 text-teal-600" />;
       case 'ShieldAlertIcon': return <ShieldAlert className="w-6 h-6 text-rose-600" />;
       case 'KeyIcon': return <Key className="w-6 h-6 text-amber-600" />;
+      case 'ScanIcon': return <Scan className="w-6 h-6 text-emerald-600" />;
+      case 'CropIcon': return <Crop className="w-6 h-6 text-sky-600" />;
+      case 'Share2Icon': return <Share2 className="w-6 h-6 text-rose-600" />;
       default: return <Sparkles className="w-6 h-6 text-indigo-500" />;
     }
   };

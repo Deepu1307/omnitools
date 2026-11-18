@@ -11,7 +11,51 @@ export interface Tool {
 }
 
 export const TOOLS: Tool[] = [
-  // Media & Consumer
+  // Media & Consumer Suite
+  {
+    id: 'social-downloader',
+    name: 'Social Media Video & Post Downloader',
+    slug: 'social-downloader',
+    category: 'media',
+    description: 'Download Reels, Shorts, TikTok clips, and posts from public social links in high-definition MP4 with zero watermarks.',
+    keywords: ['instagram reel downloader', 'tiktok video download', 'save social video', 'shorts downloader', 'video saver online'],
+    icon: 'Share2Icon',
+    isPopular: true,
+    badge: 'Massive Traffic',
+  },
+  {
+    id: 'doc-scanner',
+    name: 'Document Scanner & PDF Enhancer',
+    slug: 'doc-scanner',
+    category: 'pdf',
+    description: 'Turn photos of paper receipts, IDs, and notes into clean, high-contrast black-and-white scanned documents and downloadable PDFs.',
+    keywords: ['online doc scanner', 'scan document to pdf', 'camscanner alternative free', 'receipt scanner online'],
+    icon: 'ScanIcon',
+    isPopular: true,
+    badge: 'High Search',
+  },
+  {
+    id: 'image-cropper',
+    name: 'Social Media Image & Canvas Cropper',
+    slug: 'image-cropper',
+    category: 'media',
+    description: 'Crop images to exact social aspect ratios: 1:1 (Instagram), 9:16 (Stories/Reels), 16:9 (YouTube), and custom freeform.',
+    keywords: ['image cropper', 'crop photo for instagram', 'youtube thumbnail cropper', 'aspect ratio cutter'],
+    icon: 'CropIcon',
+    isPopular: true,
+    badge: 'Essential',
+  },
+  {
+    id: 'qr-code-generator',
+    name: 'Custom QR Code Studio',
+    slug: 'qr-code-generator',
+    category: 'consumer',
+    description: 'Create high-resolution custom QR codes for websites, WiFi networks, vCards, and text. Download as PNG or SVG.',
+    keywords: ['qr code generator', 'free qr code', 'wifi qr code', 'custom color qr code', 'svg qr code'],
+    icon: 'QrCodeIcon',
+    isPopular: true,
+    badge: 'Popular',
+  },
   {
     id: 'image-resizer',
     name: 'Image Resizer & Compressor',
@@ -21,7 +65,7 @@ export const TOOLS: Tool[] = [
     keywords: ['image resizer', 'compress image', 'convert webp to png', 'reduce photo size', 'client-side photo editor'],
     icon: 'ImageIcon',
     isPopular: true,
-    badge: 'Popular',
+    badge: 'Privacy First',
   },
   {
     id: 'background-remover',
@@ -35,17 +79,6 @@ export const TOOLS: Tool[] = [
     badge: 'AI / Canvas',
   },
   {
-    id: 'qr-code-generator',
-    name: 'Custom QR Code Studio',
-    slug: 'qr-code-generator',
-    category: 'consumer',
-    description: 'Create high-resolution custom QR codes for websites, WiFi networks, vCards, and text. Download as PNG or SVG.',
-    keywords: ['qr code generator', 'free qr code', 'wifi qr code', 'custom color qr code', 'svg qr code'],
-    icon: 'QrCodeIcon',
-    isPopular: true,
-    badge: 'High Search',
-  },
-  {
     id: 'video-clipper',
     name: 'Video Clipper & Trimmer',
     slug: 'video-clipper',
@@ -53,7 +86,7 @@ export const TOOLS: Tool[] = [
     description: 'Trim and cut MP4 and WebM videos without watermarks. Set exact start/end timestamps and export in seconds.',
     keywords: ['video cutter', 'trim video online', 'video clipper', 'cut mp4 free'],
     icon: 'VideoIcon',
-    isPopular: true,
+    isPopular: false,
     badge: 'No Watermark',
   },
 
@@ -81,7 +114,7 @@ export const TOOLS: Tool[] = [
     badge: 'New',
   },
 
-  // Calculators & High-CPM Finance
+  // Finance & Calculators
   {
     id: 'compound-interest-calculator',
     name: 'Compound Interest & SIP Calculator',
@@ -116,7 +149,7 @@ export const TOOLS: Tool[] = [
     badge: 'Cloud & B2B',
   },
 
-  // Developer & Security
+  // Security & Developer
   {
     id: 'jwt-debugger',
     name: 'Private JWT Inspector & Decoder',
@@ -125,7 +158,7 @@ export const TOOLS: Tool[] = [
     description: 'Decode and inspect JSON Web Tokens locally. Check header, payload claims, expiration timers, and structure without sending tokens to any server.',
     keywords: ['jwt decoder', 'jwt debugger', 'decode token', 'jwt expiration check', 'private jwt viewer'],
     icon: 'ShieldAlertIcon',
-    isPopular: true,
+    isPopular: false,
     badge: 'Security',
   },
   {
