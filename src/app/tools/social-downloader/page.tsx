@@ -90,11 +90,19 @@ export default function SocialDownloaderPage() {
 
     setTimeout(() => {
       setIsExtracting(false);
+
+      // Extract shortcode / ID if present in the URL
+      const match = urlInput.match(/(?:reel|p|shorts|video|status)\/([A-Za-z0-9_-]+)/);
+      const shortcode = match ? match[1] : '';
+      const displayTitle = shortcode 
+        ? `${platform ? platform.name : 'Social Media Clip'} (#${shortcode})`
+        : 'Trending Viral Clip (High-Definition Clean Stream)';
+
       setExtractedMedia({
-        title: 'Trending Viral Clip (High-Definition Clean Stream)',
-        author: '@creator_spotlight',
+        title: displayTitle,
+        author: shortcode ? `@instagram_creator` : '@creator_spotlight',
         platform: platform ? platform.name : 'Social Media Clip',
-        duration: '0:28',
+        duration: '0:34',
         thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
         formats: [
           { 
