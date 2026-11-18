@@ -16,7 +16,12 @@ import {
   ShieldCheck,
   Zap,
   CheckCircle2,
-  Lock
+  Lock,
+  QrCode,
+  TrendingUp,
+  Layers,
+  Key,
+  ShieldAlert
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -30,8 +35,8 @@ export default function HomePage() {
     { id: 'popular', label: '⭐ Popular' },
     { id: 'media', label: 'Image & Video' },
     { id: 'pdf', label: 'PDF Utilities' },
-    { id: 'calculator', label: 'Calculators' },
-    { id: 'developer', label: 'Developer' },
+    { id: 'calculator', label: 'Finance & Calc' },
+    { id: 'security', label: 'Security & Dev' },
   ];
 
   const filteredTools = TOOLS.filter((tool) => {
@@ -43,6 +48,7 @@ export default function HomePage() {
     if (!matchesSearch) return false;
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'popular') return tool.isPopular;
+    if (selectedCategory === 'security') return tool.category === 'security' || tool.category === 'developer';
     return tool.category === selectedCategory;
   });
 
@@ -55,6 +61,11 @@ export default function HomePage() {
       case 'VideoIcon': return <Video className="w-6 h-6 text-purple-500" />;
       case 'CodeIcon': return <Code2 className="w-6 h-6 text-indigo-500" />;
       case 'CloudIcon': return <Cloud className="w-6 h-6 text-cyan-500" />;
+      case 'QrCodeIcon': return <QrCode className="w-6 h-6 text-indigo-600" />;
+      case 'TrendingUpIcon': return <TrendingUp className="w-6 h-6 text-emerald-600" />;
+      case 'LayersIcon': return <Layers className="w-6 h-6 text-teal-600" />;
+      case 'ShieldAlertIcon': return <ShieldAlert className="w-6 h-6 text-rose-600" />;
+      case 'KeyIcon': return <Key className="w-6 h-6 text-amber-600" />;
       default: return <Sparkles className="w-6 h-6 text-indigo-500" />;
     }
   };
@@ -77,7 +88,7 @@ export default function HomePage() {
           Free, private, in-browser utilities for photos, videos, PDFs, calculations, and developer workflows. No signup, no watermarks, no bandwidth caps.
         </p>
 
-        {/* Search Bar */}
+        {/* Search Bar with Cmd+K hint */}
         <div className="mt-8 relative max-w-xl mx-auto">
           <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-400">
             <Search className="w-5 h-5" />
@@ -86,9 +97,14 @@ export default function HomePage() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search tools (e.g., resize image, split pdf, age calculator)..."
-            className="w-full pl-11 pr-4 py-3.5 text-sm sm:text-base rounded-2xl border border-slate-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+            placeholder="Search tools (e.g., qr code, split pdf, age, password)..."
+            className="w-full pl-11 pr-16 py-3.5 text-sm sm:text-base rounded-2xl border border-slate-300 bg-white shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all placeholder:text-slate-400"
           />
+          <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+            <kbd className="hidden sm:inline-flex px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-xs font-mono text-slate-500">
+              ⌘K
+            </kbd>
+          </div>
         </div>
 
         {/* Category Pills */}
@@ -217,12 +233,12 @@ export default function HomePage() {
       {/* Mid-Page Monetization Banner */}
       <AdBanner slot="footer-banner" className="mt-14" />
 
-      {/* Frequently Asked Questions (High Organic SEO Value) */}
+      {/* Frequently Asked Questions */}
       <section className="mt-16 bg-white rounded-2xl border border-slate-200/80 p-8">
         <h2 className="text-xl sm:text-2xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
         <div className="space-y-6 text-sm text-slate-600">
           <div>
-            <h4 className="font-semibold text-slate-800 text-base mb-1">Are my files and photos safe?</h4>
+            <h4 className="font-semibold text-slate-800 text-base mb-1">Are my files, passwords, and photos safe?</h4>
             <p className="text-slate-500 leading-relaxed">
               Yes, 100%. Unlike most file conversion websites, our tools do not upload your media to any server or cloud database. All transformations are executed directly inside your web browser.
             </p>
@@ -230,7 +246,7 @@ export default function HomePage() {
           <div className="pt-4 border-t border-slate-100">
             <h4 className="font-semibold text-slate-800 text-base mb-1">How does OmniTools stay free?</h4>
             <p className="text-slate-500 leading-relaxed">
-              We cover server and hosting costs through non-intrusive sponsorships and partner advertisements. We will never sell user data or add paywalls to core functionality.
+              We cover development and hosting costs through non-intrusive sponsorships and partner advertisements. We will never sell user data or add paywalls to core functionality.
             </p>
           </div>
           <div className="pt-4 border-t border-slate-100">
