@@ -49,6 +49,14 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [shortcutKey, setShortcutKey] = useState<string>('⌘K');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform);
+      setShortcutKey(isApple ? '⌘K' : 'Ctrl K');
+    }
+  }, []);
 
   const categories = [
     { id: 'all', label: 'All Tools', icon: <Sparkles className="w-3.5 h-3.5" /> },
@@ -153,7 +161,7 @@ function HomeContent() {
           />
           <div className="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
             <kbd className="hidden sm:inline-flex px-2 py-0.5 rounded bg-slate-100 border border-slate-200 text-xs font-mono text-slate-500">
-              ⌘K
+              {shortcutKey}
             </kbd>
           </div>
         </div>

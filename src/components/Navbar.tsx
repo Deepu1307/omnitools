@@ -18,9 +18,15 @@ import CommandPalette from './CommandPalette';
 
 export default function Navbar() {
   const [isCommandOpen, setIsCommandOpen] = useState(false);
+  const [shortcutKey, setShortcutKey] = useState<string>('⌘K');
 
-  // Global Cmd+K keyboard shortcut listener
+  // Detect OS for shortcut key display and listen for Cmd+K / Ctrl+K
   useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const isApple = /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform);
+      setShortcutKey(isApple ? '⌘K' : 'Ctrl K');
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
@@ -107,7 +113,7 @@ export default function Navbar() {
               <Search className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors shrink-0" />
               <span className="flex-1 text-left text-slate-500 truncate">Quick search tools...</span>
               <kbd className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] font-mono text-slate-500 shadow-2xs shrink-0">
-                ⌘K
+                {shortcutKey}
               </kbd>
             </button>
 
