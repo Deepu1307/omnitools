@@ -50,10 +50,12 @@ export default function SocialDownloaderPage() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const demoUrls = [
-    { label: 'Instagram Reel', url: 'https://www.instagram.com/reel/C8x7Y9kL2/' },
+    { label: 'Instagram Reel', url: 'https://www.instagram.com/reel/Df2PcQxRc_H/' },
+    { label: 'YouTube Shorts', url: 'https://youtube.com/shorts/rBuPStnYrTM' },
+    { label: 'Twitter / X', url: 'https://x.com/PapiTrumpo/status/2122388502189048261/video/1' },
+    { label: 'Facebook Reel', url: 'https://www.facebook.com/share/r/1EuaZYrvUD/' },
     { label: 'TikTok Video', url: 'https://www.tiktok.com/@creator/video/7381928472918' },
-    { label: 'YouTube Shorts', url: 'https://www.youtube.com/shorts/dQw4w9WgXcQ' },
-    { label: 'Twitter / X Clip', url: 'https://x.com/techinsider/status/17928391823' },
+    { label: 'LinkedIn', url: 'https://lnkd.in/p/dD5hn_3Y' },
   ];
 
   const detectPlatform = (url: string) => {
@@ -61,7 +63,8 @@ export default function SocialDownloaderPage() {
     if (url.includes('tiktok.com')) return { name: 'TikTok HD', badge: 'bg-black' };
     if (url.includes('youtube.com') || url.includes('youtu.be')) return { name: 'YouTube Shorts', badge: 'bg-red-600' };
     if (url.includes('twitter.com') || url.includes('x.com')) return { name: 'Twitter / X Clip', badge: 'bg-slate-900' };
-    if (url.includes('facebook.com') || url.includes('fb.watch')) return { name: 'Facebook Video', badge: 'bg-blue-600' };
+    if (url.includes('facebook.com') || url.includes('fb.watch')) return { name: 'Facebook Reel', badge: 'bg-blue-600' };
+    if (url.includes('linkedin.com') || url.includes('lnkd.in')) return { name: 'LinkedIn Video', badge: 'bg-[#0077b5]' };
     return null;
   };
 
@@ -92,30 +95,52 @@ export default function SocialDownloaderPage() {
       setIsExtracting(false);
 
       // Extract shortcode / ID if present in the URL
-      const match = urlInput.match(/(?:reel|p|shorts|video|status)\/([A-Za-z0-9_-]+)/);
+      const match = urlInput.match(/(?:reel|p|shorts|video|status|share\/r|\/r\/)\/([A-Za-z0-9_-]+)/i);
       const shortcode = match ? match[1] : '';
+
+      // Extract creator username when present
+      let author = '@creator_spotlight';
+      const xAuthorMatch = urlInput.match(/(?:twitter\.com|x\.com)\/([A-Za-z0-9_]+)\/status/i);
+      const ttAuthorMatch = urlInput.match(/tiktok\.com\/@([A-Za-z0-9_.-]+)/i);
+
+      if (xAuthorMatch) {
+        author = `@${xAuthorMatch[1]}`;
+      } else if (ttAuthorMatch) {
+        author = `@${ttAuthorMatch[1]}`;
+      } else if (shortcode) {
+        const platPrefix = platform ? platform.name.split(' ')[0].toLowerCase() : 'creator';
+        author = `@${platPrefix}_spotlight`;
+      }
+
       const displayTitle = shortcode 
         ? `${platform ? platform.name : 'Social Media Clip'} (#${shortcode})`
         : 'Trending Viral Clip (High-Definition Clean Stream)';
 
       let embedUrl = '';
+      let dynamicThumbnail = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80';
+
       if (urlInput.includes('instagram.com') && shortcode) {
         embedUrl = `https://www.instagram.com/reel/${shortcode}/embed/`;
       } else if ((urlInput.includes('youtube.com') || urlInput.includes('youtu.be')) && shortcode) {
         embedUrl = `https://www.youtube-nocookie.com/embed/${shortcode}?autoplay=1`;
+        dynamicThumbnail = `https://img.youtube.com/vi/${shortcode}/hqdefault.jpg`;
       } else if (urlInput.includes('tiktok.com') && shortcode) {
         embedUrl = `https://www.tiktok.com/embed/v2/${shortcode}`;
+      } else if ((urlInput.includes('twitter.com') || urlInput.includes('x.com')) && shortcode) {
+        embedUrl = `https://platform.twitter.com/embed/Tweet.html?id=${shortcode}&theme=dark`;
+      } else if (urlInput.includes('facebook.com') || urlInput.includes('fb.watch')) {
+        embedUrl = `https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(urlInput)}&show_text=0`;
       }
 
       setExtractedMedia({
         title: displayTitle,
-        author: shortcode ? `@instagram_creator` : '@creator_spotlight',
+        author,
         platform: platform ? platform.name : 'Social Media Clip',
         duration: '0:34',
         shortcode,
         sourceUrl: urlInput,
         embedUrl,
-        thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
+        thumbnail: dynamicThumbnail,
         formats: [
           { 
             id: '1080p', 
@@ -322,10 +347,11 @@ export default function SocialDownloaderPage() {
         <div className="flex flex-wrap items-center justify-center gap-4 mt-6 pt-6 border-t border-slate-100 text-xs font-semibold text-slate-500">
           <span className="text-slate-400">Supported:</span>
           <span className="flex items-center gap-1 text-slate-700">📸 Instagram Reels</span>
-          <span className="flex items-center gap-1 text-slate-700">🎵 TikTok (No Watermark)</span>
           <span className="flex items-center gap-1 text-slate-700">▶️ YouTube Shorts</span>
           <span className="flex items-center gap-1 text-slate-700">🐦 Twitter / X</span>
-          <span className="flex items-center gap-1 text-slate-700">📘 Facebook Videos</span>
+          <span className="flex items-center gap-1 text-slate-700">📘 Facebook Reels</span>
+          <span className="flex items-center gap-1 text-slate-700">🎵 TikTok</span>
+          <span className="flex items-center gap-1 text-slate-700">💼 LinkedIn</span>
         </div>
       </div>
 
