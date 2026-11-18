@@ -26,15 +26,17 @@ export default function VideoClipperPage() {
   const [isExporting, setIsExporting] = useState<boolean>(false);
   const [clippedBlobUrl, setClippedBlobUrl] = useState<string | null>(null);
   const [exportProgress, setExportProgress] = useState<number>(0);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileUpload = (file: File) => {
     if (!file.type.startsWith('video/')) {
-      alert('Please select an MP4 or WebM video file.');
+      setErrorMessage('Please select a valid MP4 or WebM video file.');
       return;
     }
+    setErrorMessage(null);
     setVideoFile(file);
     const url = URL.createObjectURL(file);
     setVideoUrl(url);
@@ -84,7 +86,7 @@ export default function VideoClipperPage() {
     const stream = (video as any).captureStream ? (video as any).captureStream() : (video as any).mozCaptureStream?.();
 
     if (!stream) {
-      alert('Your browser does not support in-browser media recording.');
+      setErrorMessage('Your browser does not support in-browser media recording.');
       setIsExporting(false);
       return;
     }
@@ -249,6 +251,12 @@ export default function VideoClipperPage() {
                 />
               </div>
             </div>
+
+            {errorMessage && (
+              <div className="p-3 bg-rose-50 border border-rose-200 text-rose-700 text-xs font-semibold rounded-xl">
+                {errorMessage}
+              </div>
+            )}
 
             {/* Action buttons */}
             <div className="flex flex-col sm:flex-row gap-3 pt-4">
