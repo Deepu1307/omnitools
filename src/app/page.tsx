@@ -30,7 +30,10 @@ import {
   Split,
   Scale,
   Activity,
-  Flame
+  Flame,
+  Receipt,
+  BadgePercent,
+  MessageSquare
 } from 'lucide-react';
 import { TOOLS, Tool } from '@/types/tools';
 import AdBanner from '@/components/AdBanner';
@@ -44,6 +47,7 @@ function HomeContent() {
     { id: 'all', label: 'All Tools' },
     { id: 'popular', label: '⭐ Popular' },
     { id: 'daily', label: '⚡ Daily Essentials' },
+    { id: 'business', label: '💼 Business & Local' },
     { id: 'health', label: '🥗 Health & Fitness' },
     { id: 'media', label: 'Image & Video' },
     { id: 'pdf', label: 'PDF Utilities' },
@@ -71,6 +75,7 @@ function HomeContent() {
     if (selectedCategory === 'all') return true;
     if (selectedCategory === 'popular') return tool.isPopular;
     if (selectedCategory === 'daily') return tool.badge?.includes('Daily') || tool.category === 'text';
+    if (selectedCategory === 'business') return tool.category === 'business';
     if (selectedCategory === 'health') return tool.category === 'health';
     if (selectedCategory === 'security') return tool.category === 'security' || tool.category === 'developer';
     return tool.category === selectedCategory;
@@ -98,6 +103,9 @@ function HomeContent() {
       case 'ScaleIcon': return <Scale className="w-6 h-6 text-emerald-600" />;
       case 'ActivityIcon': return <Activity className="w-6 h-6 text-emerald-600" />;
       case 'FlameIcon': return <Flame className="w-6 h-6 text-amber-600" />;
+      case 'ReceiptIcon': return <Receipt className="w-6 h-6 text-indigo-600" />;
+      case 'BadgePercentIcon': return <BadgePercent className="w-6 h-6 text-emerald-600" />;
+      case 'MessageSquareIcon': return <MessageSquare className="w-6 h-6 text-emerald-600" />;
       default: return <Sparkles className="w-6 h-6 text-indigo-500" />;
     }
   };

@@ -2,7 +2,7 @@ export interface Tool {
   id: string;
   name: string;
   slug: string;
-  category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security' | 'text' | 'health';
+  category: 'consumer' | 'media' | 'pdf' | 'developer' | 'calculator' | 'security' | 'text' | 'health' | 'business';
   description: string;
   keywords: string[];
   icon: string;
@@ -11,6 +11,41 @@ export interface Tool {
 }
 
 export const TOOLS: Tool[] = [
+  // Local Business & Commerce Suite
+  {
+    id: 'invoice-generator',
+    name: 'Instant Professional Invoice Maker',
+    slug: 'invoice-generator',
+    category: 'business',
+    description: 'Create, customize, and download professional client invoices and receipts with auto-calculated taxes, discounts, and print-ready PDF export.',
+    keywords: ['invoice generator free', 'create invoice pdf', 'receipt maker online', 'freelance invoice template', 'bill generator'],
+    icon: 'ReceiptIcon',
+    isPopular: true,
+    badge: 'Business Essential',
+  },
+  {
+    id: 'profit-margin-calculator',
+    name: 'Profit Margin & Markup Calculator',
+    slug: 'profit-margin-calculator',
+    category: 'business',
+    description: 'Calculate gross profit, profit margin percentage, markup rate, and retail sales price for shops, freelancers, and e-commerce sellers.',
+    keywords: ['profit margin calculator', 'markup calculator', 'retail pricing calculator', 'gross profit margin'],
+    icon: 'BadgePercentIcon',
+    isPopular: true,
+    badge: 'Retail & Commerce',
+  },
+  {
+    id: 'whatsapp-link-generator',
+    name: 'WhatsApp Direct Chat & QR Link Maker',
+    slug: 'whatsapp-link-generator',
+    category: 'business',
+    description: 'Generate instant click-to-chat WhatsApp links and counter QR codes with pre-filled customer messages for local bookings and orders.',
+    keywords: ['whatsapp link generator', 'wa me link maker', 'whatsapp qr code for business', 'whatsapp order link'],
+    icon: 'MessageSquareIcon',
+    isPopular: true,
+    badge: 'Local Commerce',
+  },
+
   // Health & Fitness Suite
   {
     id: 'bmi-calculator',
