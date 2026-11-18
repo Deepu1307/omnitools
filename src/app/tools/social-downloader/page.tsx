@@ -153,94 +153,48 @@ export default function SocialDownloaderPage() {
     }, 180);
   };
 
-  const finishDownload = (fmt: FormatOption) => {
-    setTimeout(() => {
-      try {
-        let blob: Blob;
-        let filename = `OmniTools_${fmt.id}_${Date.now()}.${fmt.ext}`;
+  const finishDownload = async (fmt: FormatOption) => {
+    try {
+      const filename = `OmniTools_${fmt.id}_${Date.now()}.${fmt.ext}`;
 
-        if (fmt.type === 'image') {
-          // Create HD Thumbnail Canvas
-          const canvas = document.createElement('canvas');
-          canvas.width = 1080;
-          canvas.height = 1080;
-          const ctx = canvas.getContext('2d')!;
-          const grad = ctx.createLinearGradient(0, 0, 1080, 1080);
-          grad.addColorStop(0, '#4f46e5');
-          grad.addColorStop(1, '#06b6d4');
-          ctx.fillStyle = grad;
-          ctx.fillRect(0, 0, 1080, 1080);
-          ctx.fillStyle = '#ffffff';
-          ctx.font = 'bold 52px sans-serif';
-          ctx.textAlign = 'center';
-          ctx.fillText('OmniTools HD Social Media Capture', 540, 520);
-          ctx.font = '32px sans-serif';
-          ctx.fillText('Watermark-Free Clean Download', 540, 580);
-          
-          canvas.toBlob((b) => {
-            if (b) saveBlob(b, filename);
-          }, 'image/jpeg', 0.95);
-        } else if (fmt.type === 'audio') {
-          // Create dummy clean MP3 audio container
-          const audioBytes = new Uint8Array(1024 * 100);
-          blob = new Blob([audioBytes], { type: 'audio/mpeg' });
-          saveBlob(blob, filename);
-        } else {
-          // Generate real short WebM/MP4 video stream via Canvas & MediaRecorder
-          const canvas = document.createElement('canvas');
-          canvas.width = 720;
-          canvas.height = 1280;
-          const ctx = canvas.getContext('2d')!;
-
-          const stream = canvas.captureStream(30);
-          const recorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
-          const chunks: Blob[] = [];
-
-          recorder.ondataavailable = (e) => chunks.push(e.data);
-          recorder.onstop = () => {
-            const videoBlob = new Blob(chunks, { type: 'video/mp4' });
-            saveBlob(videoBlob, filename);
-          };
-
-          recorder.start();
-
-          // Animate a short clip
-          let frame = 0;
-          const anim = setInterval(() => {
-            frame++;
-            const grad = ctx.createLinearGradient(0, 0, 0, 1280);
-            grad.addColorStop(0, '#0f172a');
-            grad.addColorStop(1, '#312e81');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, 720, 1280);
-
-            // Animated circle
-            ctx.fillStyle = '#38bdf8';
-            ctx.beginPath();
-            ctx.arc(360, 600 + Math.sin(frame * 0.2) * 50, 80, 0, Math.PI * 2);
-            ctx.fill();
-
-            ctx.fillStyle = '#ffffff';
-            ctx.font = 'bold 36px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText('OmniTools Clean Download', 360, 480);
-            ctx.font = '24px sans-serif';
-            ctx.fillText(`${fmt.quality} • Watermark Free`, 360, 540);
-
-            if (frame > 25) {
-              clearInterval(anim);
-              recorder.stop();
-            }
-          }, 30);
-        }
-
-        setDownloadSuccessFormat(fmt.id);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setActiveDownloadFormat(null);
+      if (fmt.type === 'image') {
+        // Create HD Thumbnail Canvas
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1080;
+        const ctx = canvas.getContext('2d')!;
+        const grad = ctx.createLinearGradient(0, 0, 1080, 1080);
+        grad.addColorStop(0, '#4f46e5');
+        grad.addColorStop(1, '#06b6d4');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, 1080, 1080);
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 52px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('OmniTools HD Social Media Capture', 540, 520);
+        ctx.font = '32px sans-serif';
+        ctx.fillText('Watermark-Free Clean Download', 540, 580);
+        
+        canvas.toBlob((b) => {
+          if (b) saveBlob(b, filename);
+        }, 'image/jpeg', 0.95);
+      } else if (fmt.type === 'audio') {
+        const res = await fetch('/sample-media/audio_sample.mp3');
+        const blob = await res.blob();
+        saveBlob(blob, filename);
+      } else {
+        const mediaSrc = fmt.id === '720p' ? '/sample-media/video_720p.mp4' : '/sample-media/video_1080p.mp4';
+        const res = await fetch(mediaSrc);
+        const blob = await res.blob();
+        saveBlob(blob, filename);
       }
-    }, 400);
+
+      setDownloadSuccessFormat(fmt.id);
+    } catch (err) {
+      console.error('Download error:', err);
+    } finally {
+      setActiveDownloadFormat(null);
+    }
   };
 
   const saveBlob = (blob: Blob, filename: string) => {
@@ -362,33 +316,50 @@ export default function SocialDownloaderPage() {
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             {/* Interactive Preview Container */}
             <div className="relative w-full sm:w-56 aspect-[9/14] rounded-2xl overflow-hidden bg-slate-900 shrink-0 shadow-lg group">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={extractedMedia.thumbnail}
-                alt="Media thumbnail"
-                className={`w-full h-full object-cover transition-transform duration-500 ${isPlayingPreview ? 'scale-105 filter blur-xs' : ''}`}
-              />
-
-              {/* Live Preview Overlay Simulation */}
-              <div 
-                onClick={() => setIsPlayingPreview((prev) => !prev)}
-                className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center cursor-pointer hover:bg-black/30 transition-all p-3 text-center"
-              >
-                <div className="w-12 h-12 rounded-full bg-white/90 text-slate-900 flex items-center justify-center shadow-md transform group-hover:scale-110 transition-transform mb-2">
-                  {isPlayingPreview ? (
-                    <Pause className="w-5 h-5 fill-slate-900" />
-                  ) : (
-                    <Play className="w-5 h-5 fill-slate-900 ml-0.5" />
-                  )}
+              {isPlayingPreview ? (
+                <div className="relative w-full h-full">
+                  <video
+                    src="/sample-media/video_1080p.mp4"
+                    autoPlay
+                    controls
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                  />
+                  <button
+                    onClick={() => setIsPlayingPreview(false)}
+                    className="absolute top-2 right-2 px-2 py-0.5 rounded-md bg-black/60 hover:bg-black/80 text-white text-[10px] font-bold z-10 transition-colors"
+                  >
+                    Close Preview
+                  </button>
                 </div>
-                <span className="text-[11px] font-bold text-white uppercase tracking-wider drop-shadow">
-                  {isPlayingPreview ? 'Pause Preview' : 'Play Live Preview'}
-                </span>
-              </div>
+              ) : (
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={extractedMedia.thumbnail}
+                    alt="Media thumbnail"
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
 
-              <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-white text-[10px] font-mono font-bold">
-                {extractedMedia.duration}
-              </span>
+                  {/* Live Preview Overlay */}
+                  <div 
+                    onClick={() => setIsPlayingPreview(true)}
+                    className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center cursor-pointer hover:bg-black/30 transition-all p-3 text-center"
+                  >
+                    <div className="w-12 h-12 rounded-full bg-white/90 text-slate-900 flex items-center justify-center shadow-md transform group-hover:scale-110 transition-transform mb-2">
+                      <Play className="w-5 h-5 fill-slate-900 ml-0.5" />
+                    </div>
+                    <span className="text-[11px] font-bold text-white uppercase tracking-wider drop-shadow">
+                      Play Live Preview
+                    </span>
+                  </div>
+
+                  <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded-md bg-black/80 text-white text-[10px] font-mono font-bold">
+                    {extractedMedia.duration}
+                  </span>
+                </>
+              )}
             </div>
 
             <div className="flex-1 space-y-4 w-full">
