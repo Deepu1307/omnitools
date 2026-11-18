@@ -98,11 +98,23 @@ export default function SocialDownloaderPage() {
         ? `${platform ? platform.name : 'Social Media Clip'} (#${shortcode})`
         : 'Trending Viral Clip (High-Definition Clean Stream)';
 
+      let embedUrl = '';
+      if (urlInput.includes('instagram.com') && shortcode) {
+        embedUrl = `https://www.instagram.com/reel/${shortcode}/embed/`;
+      } else if ((urlInput.includes('youtube.com') || urlInput.includes('youtu.be')) && shortcode) {
+        embedUrl = `https://www.youtube-nocookie.com/embed/${shortcode}?autoplay=1`;
+      } else if (urlInput.includes('tiktok.com') && shortcode) {
+        embedUrl = `https://www.tiktok.com/embed/v2/${shortcode}`;
+      }
+
       setExtractedMedia({
         title: displayTitle,
         author: shortcode ? `@instagram_creator` : '@creator_spotlight',
         platform: platform ? platform.name : 'Social Media Clip',
         duration: '0:34',
+        shortcode,
+        sourceUrl: urlInput,
+        embedUrl,
         thumbnail: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=80',
         formats: [
           { 
@@ -325,7 +337,26 @@ export default function SocialDownloaderPage() {
           <div className="flex flex-col sm:flex-row gap-6 items-start">
             {/* Interactive Preview Container */}
             <div className="relative w-full sm:w-56 aspect-[9/14] rounded-2xl overflow-hidden bg-slate-900 shrink-0 shadow-lg group">
-              {isPlayingPreview ? (
+              {isPlayingPreview && extractedMedia.embedUrl ? (
+                <div className="relative w-full h-full bg-black">
+                  <iframe
+                    src={extractedMedia.embedUrl}
+                    className="w-full h-full border-0 rounded-2xl"
+                    allow="autoplay; encrypted-media"
+                    allowFullScreen
+                  />
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setIsPlayingPreview(false);
+                    }}
+                    className="absolute top-2 right-2 px-2.5 py-1 rounded-full bg-black/80 hover:bg-black text-white text-[10px] font-bold z-20 shadow backdrop-blur-xs transition-colors flex items-center gap-1 cursor-pointer"
+                  >
+                    ✕ Close
+                  </button>
+                </div>
+              ) : isPlayingPreview ? (
                 <div className="relative w-full h-full bg-black">
                   <video
                     src="/sample-media/video_1080p.mp4"
@@ -389,6 +420,17 @@ export default function SocialDownloaderPage() {
                 <h3 className="font-extrabold text-lg text-slate-900 mt-2">
                   {extractedMedia.title}
                 </h3>
+                {extractedMedia.sourceUrl && (
+                  <a
+                    href={extractedMedia.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 text-xs text-indigo-600 hover:text-indigo-700 font-semibold mt-1 transition-colors"
+                  >
+                    <span>View original on {extractedMedia.platform}</span>
+                    <ExternalLink className="w-3 h-3" />
+                  </a>
+                )}
               </div>
 
               {/* Active Download Progress Bar Modal/Bar */}
