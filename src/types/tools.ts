@@ -443,7 +443,7 @@ export const TOOLS: Tool[] = [
     name: 'Fuel Cost & Trip Mileage Calculator',
     slug: 'fuel-trip-calculator',
     category: 'calculator',
-    professions: ['drivers', 'business', 'finance'],
+    professions: ['drivers', 'real-estate', 'finance'],
     description: 'Calculate exact trip fuel costs, fuel consumption (liters/gallons), toll breakdown, and per-passenger split for drivers and fleets.',
     keywords: ['fuel cost calculator', 'gas trip calculator', 'mileage cost calculator', 'driver expense calculator'],
     icon: 'ScaleIcon',

@@ -4,7 +4,7 @@ import React from 'react';
 import { ExternalLink, Sparkles } from 'lucide-react';
 
 interface AdBannerProps {
-  slot?: 'top-banner' | 'in-tool' | 'sidebar' | 'footer-banner';
+  slot?: 'top-banner' | 'in-tool' | 'sidebar' | 'footer-banner' | 'bottom-content';
   className?: string;
 }
 
