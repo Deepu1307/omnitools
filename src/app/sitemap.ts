@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { TOOLS } from '@/types/tools';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://omnitools.io'; // Change to user's production domain when ready
+  const baseUrl = 'https://localkit.online';
 
   const toolRoutes = TOOLS.map((tool) => ({
     url: `${baseUrl}/tools/${tool.slug}`,

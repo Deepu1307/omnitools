@@ -516,7 +516,7 @@ function HomeContent() {
             Why Millions Prefer Client-Side Browser Tools
           </h2>
           <p className="mt-3 text-sm text-slate-600">
-            Traditional online converters upload your personal documents and media to third-party servers. OmniTools works completely differently.
+            Traditional online converters upload your personal documents and media to third-party servers. LocalKit works completely differently.
           </p>
         </div>
 

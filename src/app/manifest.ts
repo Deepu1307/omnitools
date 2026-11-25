@@ -2,8 +2,8 @@ import { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'OmniTools — Free Client-Side Productivity Utilities',
-    short_name: 'OmniTools',
+    name: 'LocalKit — 100% Private Client-Side Utilities',
+    short_name: 'LocalKit',
     description: '100% free, private client-side utilities for photos, videos, PDFs, calculations, and developer workflows with zero uploads.',
     start_url: '/?source=pwa',
     id: '/',

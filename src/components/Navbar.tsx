@@ -101,7 +101,7 @@ export default function Navbar() {
             <Link 
               href="/" 
               className="group py-1 shrink-0"
-              aria-label="OmniTools Home"
+              aria-label="LocalKit Home"
             >
               <BrandLogo />
             </Link>

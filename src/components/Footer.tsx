@@ -186,7 +186,7 @@ export default function Footer() {
 
         <div className="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
           <p>
-            © {new Date().getFullYear()} OmniTools.io • Built with zero data tracking by{' '}
+            © {new Date().getFullYear()} LocalKit.online • Built with zero data tracking by{' '}
             <a
               href="https://deepukumar.netlify.app/"
               target="_blank"

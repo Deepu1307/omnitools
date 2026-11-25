@@ -31,7 +31,7 @@ export default function BrandLogo({ size = 'md', showText = true, className = ''
         <div className="flex flex-col whitespace-nowrap select-none">
           <div className="flex items-center gap-1">
             <span className="font-extrabold text-lg text-slate-900 tracking-tight leading-none">
-              OmniTools<span className="text-indigo-600">.io</span>
+              LocalKit<span className="text-indigo-600">.online</span>
             </span>
           </div>
           <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider mt-1 leading-none">

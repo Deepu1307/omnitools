@@ -6,8 +6,8 @@ import PWAProvider from '@/components/PWAProvider';
 
 export const metadata: Metadata = {
   title: {
-    default: 'OmniTools.io — 100% Private Web Tools • Zero Uploads',
-    template: '%s | OmniTools.io',
+    default: 'LocalKit.online — 100% Private Web Tools • Zero Uploads',
+    template: '%s | LocalKit.online',
   },
   description: '100% free, private web tools for creators, professionals, and developers: image resizer, background remover, PDF splitter, age calculator, video clipper, and JSON converters. Fast, secure, and zero server uploads.',
   icons: {
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   },
   keywords: [
     'free online tools',
+    'localkit',
     'image resizer',
     'background remover',
     'pdf splitter',
@@ -32,7 +33,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'OmniTools',
+    title: 'LocalKit',
   },
   authors: [{ name: 'Deepu Kumar', url: 'https://deepukumar.netlify.app/' }],
   creator: 'Deepu Kumar',
@@ -43,8 +44,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'OmniTools',
-    title: 'OmniTools - Fast, Private Online Utilities',
+    siteName: 'LocalKit',
+    title: 'LocalKit.online - Fast, Private In-Browser Utilities',
     description: 'Instant client-side tools with zero file uploads and zero waiting.',
   },
 };

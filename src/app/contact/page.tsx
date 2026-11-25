@@ -51,7 +51,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-xl font-bold text-slate-900">Message Received!</h3>
               <p className="text-xs text-slate-500 max-w-sm mx-auto">
-                Thank you for reaching out, <strong>{name || 'Friend'}</strong>. Your feedback helps shape the next batch of OmniTools releases.
+                Thank you for reaching out, <strong>{name || 'Friend'}</strong>. Your feedback helps shape the next batch of LocalKit releases.
               </p>
               <button
                 onClick={() => {

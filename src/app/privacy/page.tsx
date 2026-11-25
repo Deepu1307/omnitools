@@ -5,7 +5,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — 100% Private, Zero Cloud Uploads',
-  description: 'OmniTools.io is architected with complete client-side privacy. Your files, images, PDFs, and calculations never leave your browser.',
+  description: 'LocalKit.online is architected with complete client-side privacy. Your files, images, PDFs, and calculations never leave your browser.',
 };
 
 export default function PrivacyPage() {
@@ -40,7 +40,7 @@ export default function PrivacyPage() {
             <span>1. Zero-Upload Architecture (Privacy by Design)</span>
           </h2>
           <p>
-            Unlike traditional web utilities that upload your documents, images, and sensitive financial records to remote cloud servers for processing, <strong>OmniTools.io operates entirely inside your local web browser</strong>.
+            Unlike traditional web utilities that upload your documents, images, and sensitive financial records to remote cloud servers for processing, <strong>LocalKit.online operates entirely inside your local web browser</strong>.
           </p>
           <p>
             When you convert a JPG to PDF, sign a legal contract, calculate stock averaging, or format text, all binary transformations and mathematical logic execute directly via your computer&apos;s WebAssembly (Wasm) and JavaScript sandbox. <strong>Your files never reach our servers, because we do not have a backend storage database.</strong>

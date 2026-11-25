@@ -4,8 +4,8 @@ import { FileText, ArrowLeft } from 'lucide-react';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — OmniTools.io',
-  description: 'Terms and conditions for utilizing the free, client-side web tools provided by OmniTools.io.',
+  title: 'Terms of Service — LocalKit.online',
+  description: 'Terms and conditions for utilizing the free, client-side web tools provided by LocalKit.online.',
 };
 
 export default function TermsPage() {
@@ -36,14 +36,14 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900">1. Acceptance of Terms</h2>
           <p>
-            By accessing or using OmniTools.io (&quot;OmniTools&quot; or the &quot;Service&quot;), you agree to be bound by these Terms of Service. If you disagree with any portion of these terms, you should discontinue using our website.
+            By accessing or using LocalKit.online (&quot;LocalKit&quot; or the &quot;Service&quot;), you agree to be bound by these Terms of Service. If you disagree with any portion of these terms, you should discontinue using our website.
           </p>
         </section>
 
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-900">2. Description of Service</h2>
           <p>
-            OmniTools provides a curated suite of browser-based utilities for personal, educational, and commercial workflows (including PDF modification, image transformations, calculators, and media utilities). All tools execute locally on your device without server-side file transmission.
+            LocalKit provides a curated suite of browser-based utilities for personal, educational, and commercial workflows (including PDF modification, image transformations, calculators, and media utilities). All tools execute locally on your device without server-side file transmission.
           </p>
         </section>
 
