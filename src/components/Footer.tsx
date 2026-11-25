@@ -196,7 +196,15 @@ export default function Footer() {
               Deepu Kumar
             </a>
           </p>
-          <div className="flex gap-4">
+          <div className="flex flex-wrap gap-4 items-center">
+            <a
+              href="https://buymeacoffee.com/deepu1307"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:underline text-amber-600 font-bold inline-flex items-center gap-1"
+            >
+              <span>Buy Me a Coffee ☕</span>
+            </a>
             <a
               href="https://deepukumar.netlify.app/"
               target="_blank"

@@ -137,7 +137,7 @@ export default function Navbar() {
                 <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-indigo-600 transition-colors" />
               </a>
               <a
-                href="https://buymeacoffee.com"
+                href="https://buymeacoffee.com/deepu1307"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 rounded-xl transition-all shadow-2xs whitespace-nowrap group hover:scale-[1.02]"
